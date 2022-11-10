@@ -1,0 +1,10 @@
+(name, commit hash stub or N/A, date)
+
+What did we do
+
+1- Added boilerplate code for pigpio library (rafael, b568d36, 11/9)
+2- Defined methods for sensor.h lib to help with setting up threads for sensors (rafael, b568d36, 11/9)
+
+Problems we came across (+ solutions)
+
+1-
