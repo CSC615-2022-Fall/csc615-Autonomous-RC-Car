@@ -38,6 +38,8 @@ int main(int argc, char *argv[])
     // flag init
 	running = 1;
 
+    signal(SIGINT, sigint);
+
     while (running) {
         // decision handling here
 
