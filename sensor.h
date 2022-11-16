@@ -19,7 +19,7 @@
 // @param gpioPin the gpio pin number connected to the sensor
 // @param input int pointer where input from sensor will be loaded into
 // @return 0 for success, otherwise for fail
-int setupSimpleSensor(int gpioPin, int* input);
+int setupSimpleSensor(int gpioPin, int* input, int name);
 
 // Starts a thread that continuously sends a pulse to the given trigger 
 // gpio pin, reads from the given echo gpio pin, and calculates the distance 
@@ -33,7 +33,7 @@ int setupSimpleSensor(int gpioPin, int* input);
 // @param echoGpioPin the gpio pin number connected to the sonar sensor echo input
 // @param input int pointer where input from sensor will be loaded into
 // @return 0 for success, otherwise for fail
-int setupSonarSensor(int triggerGpioPin, int echoGpioPin, int* input);
+int setupSonarSensor(int triggerGpioPin, int echoGpioPin, int* input, int name);
 
 // Stops all sensor threads
 void cleanupSensors();
