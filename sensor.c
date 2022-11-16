@@ -12,6 +12,7 @@
  *
  **************************************************************/
 
+#include <stdlib.h>
 #include <pthread.h>
 #include "sensor.h"
 
@@ -63,7 +64,7 @@ int setupSimpleSensor(int gpioPin, int* input, pthread_t id) {
     args->gpioNum = gpioPin;
     args->input = input;
     // start thread
-    pthread_create(id, NULL, handleSimpleSensor, &args);
+    pthread_create(&id, NULL, handleSimpleSensor, &args);
     // store thread id in array
     simpleThreads[simpleCount] = id;
     simpleCount++;
@@ -77,7 +78,7 @@ int setupSonarSensor(int triggerGpioPin, int echoGpioPin, int* input, pthread_t 
     args->triggerPin = triggerGpioPin;
     args->input = input;
     // start thread
-    pthread_create(id, NULL, handleSonarSensor, &args);
+    pthread_create(&id, NULL, handleSonarSensor, &args);
     sonarThreads[sonarCount] = id;
     sonarCount++;
     // store thread id in array
