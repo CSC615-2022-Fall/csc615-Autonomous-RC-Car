@@ -58,27 +58,27 @@ void *handleSonarSensor(void *pthread_args) {
 	}
 }
 
-int setupSimpleSensor(int gpioPin, int* input, pthread_t name) {
+int setupSimpleSensor(int gpioPin, int* input, pthread_t id) {
     struct simpleData *args = malloc(sizeof(simpleData));
     args->gpioNum = gpioPin;
     args->input = input;
     // start thread
-    pthread_create(name, NULL, handleSimpleSensor, &args);
+    pthread_create(id, NULL, handleSimpleSensor, &args);
     // store thread id in array
-    simpleThreads[simpleCount] = name;
+    simpleThreads[simpleCount] = id;
     simpleCount++;
 
     return 0;
 }
 
-int setupSonarSensor(int triggerGpioPin, int echoGpioPin, int* input, int name) {
+int setupSonarSensor(int triggerGpioPin, int echoGpioPin, int* input, pthread_t id) {
     struct sonarData *args = malloc(sizeof(sonarData));
     args->echoPin = echoGpioPin;
     args->triggerPin = triggerGpioPin;
     args->input = input;
     // start thread
-    pthread_create(name, NULL, handleSonarSensor, &args);
-    sonarThreads[sonarCount] = name;
+    pthread_create(id, NULL, handleSonarSensor, &args);
+    sonarThreads[sonarCount] = id;
     sonarCount++;
     // store thread id in array
 
