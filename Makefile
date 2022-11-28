@@ -10,9 +10,14 @@ CC         = gcc
 CFLAGS     = -g -I. -DUSE_DEV_LIB
 # To add libraries, add "-l <libname>", for multiple repeat prior for each lib.
 LIBS       = -lpigpio -lrt -lpthread -lm
-DEPS       = 
 
 DIR_O      = $(PWD)/bin
+
+# Modify DEPS based on what main needs
+# For example: Let's say that the main file requires sensor.c
+# DEPS       = sensor
+# NOTE: This DEPS isn't compiled here. DEPS files should be compiled in subdir
+DEPS       = sensor
 
 ADD_FILE   = $(OUTPUT)
 #
@@ -31,8 +36,12 @@ export DEPS
 O_FILE = $(patsubst %,$(DIR_O)/%.o,$(ADD_FILE))
 OBJ = $(O_FILE)
 
+# Converts DEPS path to DIR_O/{input}.o
+# Same way as O_FILE
+DEPS_PATH = $(patsubst %,$(DIR_O)/%.o,$(DEPS))
+
 # Compiles dependencies first(subdir) and the the current folder
-all: deps $(OBJ)
+all: deps $(OUTPUT)
 
 # Compiles dependencies from subdirectories
 # NOTE: add/delete subdirectories
@@ -42,17 +51,16 @@ all: deps $(OBJ)
 deps:
 	$(MAKE) -C ./src
 
-$(DIR_O)/%.o: %.c $(DEPS)
+$(DIR_O)/%.o: %.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-$(OUTPUT): $(OBJ)
+$(OUTPUT): $(OBJ) $(DEPS_PATH)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 clean:
 	rm -f $(DIR_O)/*.o $(OUTPUT)
 
-run: $(OUTPUT)
+run: deps $(OUTPUT)
 	./$(OUTPUT) $(RUNOPTIONS)
-
 
 # TODO: https://stackoverflow.com/questions/1277685/organize-project-and-specify-directory-for-object-files-in-makefile

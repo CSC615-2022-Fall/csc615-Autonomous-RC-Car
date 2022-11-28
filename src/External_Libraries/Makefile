@@ -34,11 +34,8 @@ all: deps $(OBJ)
 # $(MAKE) -C ./src
 deps:
 
-$(DIR_O)/%.o: %.c $(DEPS)
+$(DIR_O)/%.o: %.c
 	$(CC) -c -o $@ $< $(CFLAGS)
-
-$(OUTPUT): $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 clean:
 	rm -f $(DIR_O)/*.o $(OUTPUT)

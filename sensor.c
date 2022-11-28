@@ -12,89 +12,140 @@
  *
  **************************************************************/
 
-#include <stdlib.h>
-#include <pthread.h>
 #include "sensor.h"
 
-//creating a struct to pull and store distance
-//read by simple sensor
+#include <pthread.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define NANO_PER_SEC 1000000000.0
+
+// creating a struct to pull and store distance
+// read by simple sensor
 typedef struct simpleData {
-    int gpioNum;
-    int *input;
+	int gpioPin;
+	int *input;
 } simpleData;
 
 typedef struct sonarData {
-    int triggerPin;
-    int echoPin;
-    int *input;
+	int triggerPin;
+	int echoPin;
+	int *input;
 } sonarData;
 
 // Flag to tell sensor loops when to stop
 int sensorsRunning = 1;
 
-// TODO: array to hold thread ids
-int simpleCount = 0;
-int sonarCount = 0;
-pthread_t simpleThreads[4];
-pthread_t sonarThreads[3];
+// arrays to hold thread ids
+int simpleIdx = 0;
+int sonarIdx = 0;
+pthread_t simpleThreads[10];  // max 10 threads
+pthread_t sonarThreads[10];   // max 10 threads
+
+// SENSOR HANDLER FUNCTIONS
 
 // Get input from simple sensor thread func
 void *handleSimpleSensor(void *pthread_args) {
-    // get (int gpioPin, int* input) from pthread_args
-    
+	// get (int gpioPin, int* input) from pthread_args
+	simpleData *args = pthread_args;
+	int gpioPin = args->gpioPin;
+	int *input = args->input;
 	while (sensorsRunning) {
 		// load input from gpio pin into int* input
+		*input = gpioRead(gpioPin);
 	}
 }
 
 // Get input, and calculate distance from sonar sensor thread func
 void *handleSonarSensor(void *pthread_args) {
-    // get (int triggerGpioPin, int echoGpioPin, int* input) from pthread_args
-    simpleData *args = pthread_args;
+	// get (int triggerGpioPin, int echoGpioPin, int* input) from pthread_args
+	sonarData *args = pthread_args;
+	int triggerPin = args->triggerPin;
+	int echoPin = args->echoPin;
+	int *input = args->input;
+
+	// Initialise timers
+	struct timespec startTime;
+	struct timespec endTime;
+
 	while (sensorsRunning) {
-        // calculate distance in cm
+		// Send trigger pulse, 1ms duration, HIGH value
+		if (gpioTrigger(triggerPin, 1, 1) != 0) {
+			fprintf(stderr, "pigpio trigger failed for pin:%d\n", triggerPin);
+			return -1;
+		}
+
+		// keep setting start timer until ECHO doesn't read 0
+		while (gpioRead(echoPin) == 0) {
+			clock_gettime(CLOCK_REALTIME, &startTime);
+		}
+
+		// keep setting end timer until ECHO doesn't read 1
+		while (gpioRead(echoPin) == 1) {
+			clock_gettime(CLOCK_REALTIME, &endTime);
+		}
+
+		// calulcate elapsed time
+		double startSec = startTime.tv_sec + startTime.tv_nsec / NANO_PER_SEC;
+		double endSec = endTime.tv_sec + endTime.tv_nsec / NANO_PER_SEC;
+		double elapsedSec = endSec - startSec;
+
+		// calculate distance in cm
+		// speed of sound in air: 34300 cm/s, divide by 2 for roundtrip
+		double distance = (elapsedSec * 34300) / 2;
 
 		// load distance into int* input
-
+		*input = (int)distance;
 	}
 }
 
-int setupSimpleSensor(int gpioPin, int* input, pthread_t id) {
-    struct simpleData *args = malloc(sizeof(simpleData));
-    args->gpioNum = gpioPin;
-    args->input = input;
-    // start thread
-    pthread_create(&id, NULL, handleSimpleSensor, &args);
-    // store thread id in array
-    simpleThreads[simpleCount] = id;
-    simpleCount++;
+// PUBLIC FUNCTIONS
 
-    return 0;
+int setupSimpleSensor(int gpioPin, int *input) {
+	if (simpleIdx >= 9) return 1;  // max simple sensor threads reached
+
+	// construct args
+	struct simpleData *args = malloc(sizeof(simpleData));
+	args->gpioPin = gpioPin;
+	args->input = input;
+	// start thread
+	pthread_t id = simpleIdx;  // index used as pthread id
+	pthread_create(&id, NULL, handleSimpleSensor, &args);
+	// store thread id in array
+	simpleThreads[simpleIdx] = id;
+	simpleIdx++;  // increment to next available index
+
+	return 0;
 }
 
-int setupSonarSensor(int triggerGpioPin, int echoGpioPin, int* input, pthread_t id) {
-    struct sonarData *args = malloc(sizeof(sonarData));
-    args->echoPin = echoGpioPin;
-    args->triggerPin = triggerGpioPin;
-    args->input = input;
-    // start thread
-    pthread_create(&id, NULL, handleSonarSensor, &args);
-    sonarThreads[sonarCount] = id;
-    sonarCount++;
-    // store thread id in array
+int setupSonarSensor(int triggerGpioPin, int echoGpioPin, int *input) {
+	if (sonarIdx >= 9) return 1;  // max simple sensor threads reached
 
+	// construct args
+	struct sonarData *args = malloc(sizeof(sonarData));
+	args->echoPin = echoGpioPin;
+	args->triggerPin = triggerGpioPin;
+	args->input = input;
+	// start thread
+	pthread_t id = sonarIdx;  // index used as pthread id
+	pthread_create(&id, NULL, handleSonarSensor, &args);
+	// store thread id in array
+	sonarThreads[sonarIdx] = id;
+	sonarIdx++;  // increment to next available index
 
-    return 0;
+	return 0;
 }
 
 void cleanupSensors() {
-    sensorsRunning = 0;
-    // TODO: call pthread_join on every thread id
-    for(int i = 0; i <= simpleCount; i++) {
-        pthread_join(simpleThreads[i], NULL);
-    }
+	// tell all threads to stop
+	sensorsRunning = 0;
+	// call pthread_join on every thread id
+	// wait for all threads to finish
+	for (int i = 0; i <= simpleIdx; i++) {
+		pthread_join(simpleThreads[i], NULL);
+	}
 
-    for(int i = 0; i <= sonarCount; i++) {
-        pthread_join(sonarThreads[i], NULL);
-    }
+	for (int i = 0; i <= sonarIdx; i++) {
+		pthread_join(sonarThreads[i], NULL);
+	}
 }

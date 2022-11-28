@@ -8,14 +8,14 @@
  *
  * File: main.c
  *
- * Description: 
+ * Description:
  *
  **************************************************************/
 
+#include <pigpio.h>
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <signal.h>
-#include <pigpio.h>
 
 #include "src/sensor.h"
 
@@ -27,28 +27,27 @@ void sigint(int sig) {
 	running = 0;
 }
 
-int main(int argc, char *argv[])
-{
-    // GPIO Init
-    if (gpioInitialise() < 0) {
-        fprintf(stderr, "pigpio initialisation failed\n");
-        return 1;
-    }
+int main(int argc, char *argv[]) {
+	// GPIO Init
+	if (gpioInitialise() < 0) {
+		fprintf(stderr, "pigpio initialisation failed\n");
+		return 1;
+	}
 
-    // flag init
+	// flag init
 	running = 1;
 
-    signal(SIGINT, sigint);
+	signal(SIGINT, sigint);
 
-    while (running) {
-        // decision handling here
+	while (running) {
+		// decision handling here
 
-        // break and set running = false when done
-    }
+		// break and set running = false when done
+	}
 
-    // Cleanup
-    gpioTerminate();
-    cleanupSensors();
+	// Cleanup
+	gpioTerminate();
+	cleanupSensors();
 
-    return 0;
+	return 0;
 }

@@ -12,8 +12,6 @@
  *
  **************************************************************/
 
-#include <stdlib.h>
-#include <pthread.h>
 #include "sensor.h"
 
 //creating a struct to pull and store distance

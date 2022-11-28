@@ -1,5 +1,11 @@
 # Instructions:
+# This is a template for compiling the c files to object
 # You can copy this file to the subdirectories that you want
+#
+# NOTE: If you're modifying  the main.c file' depencencies,
+# then you should also modify the makefile in the main directory.
+# This is because this file doesn't handle linking.
+# Linking is done in the main directory.
 #
 # -- Prerequisites --
 # Make sure to name this file as Makefile
@@ -33,13 +39,10 @@ all: deps $(OBJ)
 # Then you should append this line below deps:
 # $(MAKE) -C ./src
 deps:
-	$(MAKE) -C ./External_Libraries
+	$(MAKE) -C External_Libraries
 
-$(DIR_O)/%.o: %.c $(DEPS)
+$(DIR_O)/%.o: %.c
 	$(CC) -c -o $@ $< $(CFLAGS)
-
-$(OUTPUT): $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 clean:
 	rm -f $(DIR_O)/*.o $(OUTPUT)

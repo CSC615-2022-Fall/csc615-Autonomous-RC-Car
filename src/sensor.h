@@ -11,6 +11,12 @@
  * Description: Sensor handler API definitions
  *
  **************************************************************/
+#ifndef SENSOR_H
+#define SENSOR_H
+#include <stdio.h>
+#include <pigpio.h>
+#include <stdlib.h>
+#include <pthread.h>
 
 // Starts a thread that continuously reads from the given gpio pin.
 // Expects gpio pin to be connected to a simple 0-1 input sensor, and 
@@ -39,3 +45,5 @@ int setupSonarSensor(int triggerGpioPin, int echoGpioPin, int* input, pthread_t 
 
 // Stops all sensor threads
 void cleanupSensors();
+
+#endif
