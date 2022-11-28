@@ -17,7 +17,7 @@
 #include <signal.h>
 #include <pigpio.h>
 
-#include "sensor.h"
+#include "src/sensor.h"
 
 // Flag to tell loops when to stop
 int running;
