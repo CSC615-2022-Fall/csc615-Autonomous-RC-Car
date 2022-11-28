@@ -113,7 +113,7 @@ int setupSimpleSensor(int gpioPin, int *input) {
 	pthread_create(&id, NULL, handleSimpleSensor, &args);
 	// store thread id in array
 	simpleThreads[simpleIdx] = id;
-	simpleIdx++;  // increment to next slot
+	simpleIdx++;  // increment to next available index
 
 	return 0;
 }
@@ -131,7 +131,7 @@ int setupSonarSensor(int triggerGpioPin, int echoGpioPin, int *input) {
 	pthread_create(&id, NULL, handleSonarSensor, &args);
 	// store thread id in array
 	sonarThreads[sonarIdx] = id;
-	sonarIdx++;  // increment to next slot
+	sonarIdx++;  // increment to next available index
 
 	return 0;
 }

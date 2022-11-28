@@ -20,3 +20,5 @@ clean:
 
 run: $(OUTPUT)
 	./$(OUTPUT) $(RUNOPTIONS)
+
+# TODO: https://stackoverflow.com/questions/1277685/organize-project-and-specify-directory-for-object-files-in-makefile
