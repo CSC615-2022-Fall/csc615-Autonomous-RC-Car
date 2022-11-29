@@ -42,9 +42,10 @@ Our goal is to create a small robot car using a Raspberry Pi as a central proces
   - [ ] Motors
 
 ## Progress Track
-11/09 - **Raf** -> Added starter code for the main program, a skeleton code for pulling data from sensors, and a documentation file (notes.txt).
-11/12 - **David** -> Updated the Pi's software, added GitHub login token for convenience, and installed vim for a better working environment. Found that we weren't provided with new GPIO wires.
-11/15 - **David** -> Created and shared documentation in Google Docs
-11/16 - **David & Christian** -> Assembled the wheels to the chassis, wired the wheels to a single Motorhat by daisy-chaining them, and ran the motor script from the previous assignment.
-11/16 - **Raf & Marc** -> Started implementing the sensor interface and added motor driver code to use.
-11/28 - **David** -> Changed project structure.  Source files don't need to be in the main directory.
+11/09 - **Raf** -> Added starter code for the main program, a skeleton code for pulling data from sensors, and a documentation file (notes.txt).  
+11/12 - **David** -> Updated the Pi's software, added GitHub login token for convenience, and installed vim for a better working environment. Found that we weren't provided with new GPIO wires.  
+11/15 - **David** -> Created and shared documentation in Google Docs  
+11/16 - **David & Christian** -> Assembled the wheels to the chassis, wired the wheels to a single Motorhat by daisy-chaining them, and ran the motor script from the previous assignment.  
+11/16 - **Raf & Marc** -> Started implementing the sensor interface and added motor driver code to use.  
+11/28 - **David** -> Changed project structure.  Source files don't need to be in the main directory.  
+11/29 - **David** -> Moved documentation files to doc directory. Added a README file in doc for documentation.  
