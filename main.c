@@ -31,6 +31,10 @@ int running;
 // sigint handler for cntl-c
 void sigint(int sig) {
 	running = 0;
+	Motor_Run(MOTORA, FORWARD, 0);
+    Motor_Run(MOTORB, FORWARD, 0);
+	gpioTerminate();
+	cleanupSensors();
 }
 
 int main(int argc, char *argv[]) {
@@ -82,8 +86,6 @@ int main(int argc, char *argv[]) {
 			Motor_Run(MOTORB, FORWARD, 0);
 		}
 
-		// break and set running = false when done
-        time_sleep(3);
 	}
     
 

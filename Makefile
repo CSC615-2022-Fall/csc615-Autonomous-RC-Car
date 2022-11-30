@@ -11,7 +11,7 @@ CFLAGS     = -g -I. -DUSE_DEV_LIB
 # To add libraries, add "-l <libname>", for multiple repeat prior for each lib.
 LIBS       = -lpigpio -lrt -lpthread -lm
 
-DIR_O      = $(PWD)/bin
+DIR_O      = $(CURDIR)/bin
 
 # Modify DEPS based on what main needs
 # For example: Let's say that the main file requires sensor.c
