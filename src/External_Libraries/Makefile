@@ -16,7 +16,7 @@
 #
 # Example, let's say we want to add foo.c and bar.c
 # ADD_FILE   = foo bar
-ADD_FILE   =  DEV_Config PCA9685 dev_hardware_i2c
+ADD_FILE   =  DEV_Config PCA9685 dev_hardware_i2c sysfs_gpio MotorDriver
 #
 # ----------------- End of Configurations -----------------
 

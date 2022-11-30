@@ -16,6 +16,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #include "src/sensor.h"
 #include "src/External_Libraries/MotorDriver.h"
@@ -42,6 +43,9 @@ int main(int argc, char *argv[]) {
 	// I2C, PWM, MOTOR HAT Init
 	Motor_Init();
 
+    gpioSetMode(REFL_L, PI_INPUT);
+    gpioSetMode(REFL_R, PI_INPUT);
+
 	// Left Reflective Sensor Init
 	// Pointer for input init
 	int reflLeftInput = 0;
@@ -53,6 +57,7 @@ int main(int argc, char *argv[]) {
 	int reflRightInput = 0;
 	int* reflRightInputPtr = &reflRightInput;
 	setupSimpleSensor(REFL_R, reflRightInputPtr); // setup thread
+    
 
 	// flag init
 	running = 1;
@@ -78,7 +83,9 @@ int main(int argc, char *argv[]) {
 		}
 
 		// break and set running = false when done
+        time_sleep(3);
 	}
+    
 
 	// Cleanup
 	gpioTerminate();

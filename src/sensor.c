@@ -52,10 +52,12 @@ void *handleSimpleSensor(void *pthread_args) {
     simpleData *args = pthread_args;
     int gpioPin = args->gpioPin;
     int *input = args->input;
-    while (sensorsRunning) {
+    // while (sensorsRunning) {
         // load input from gpio pin into int* input
         *input = gpioRead(gpioPin);
-    }
+        time_sleep(0.5);
+    // }
+    pthread_exit(NULL);
 }
 
 // Get input, and calculate distance from sonar sensor thread func
@@ -74,7 +76,7 @@ void *handleSonarSensor(void *pthread_args) {
         // Send trigger pulse, 1ms duration, HIGH value
         if (gpioTrigger(triggerPin, 1, 1) != 0) {
             fprintf(stderr, "pigpio trigger failed for pin:%d\n", triggerPin);
-            return -1;
+            pthread_exit(NULL);
         }
 
         // keep setting start timer until ECHO doesn't read 0
@@ -112,7 +114,7 @@ int setupSimpleSensor(int gpioPin, int *input) {
     args->input = input;
     // start thread
     pthread_t id = simpleIdx;  // index used as pthread id
-    pthread_create(&id, NULL, handleSimpleSensor, &args);
+    pthread_create(&id, NULL, handleSimpleSensor, args);
     // store thread id in array
     simpleThreads[simpleIdx] = id;
     simpleIdx++;  // increment to next slot
@@ -130,7 +132,7 @@ int setupSonarSensor(int triggerGpioPin, int echoGpioPin, int *input) {
     args->input = input;
     // start thread
     pthread_t id = sonarIdx;  // index used as pthread id
-    pthread_create(&id, NULL, handleSonarSensor, &args);
+    pthread_create(&id, NULL, handleSonarSensor, args);
     // store thread id in array
     sonarThreads[sonarIdx] = id;
     sonarIdx++;  // increment to next slot

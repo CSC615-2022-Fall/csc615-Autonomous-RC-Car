@@ -17,7 +17,7 @@ DIR_O      = $(PWD)/bin
 # For example: Let's say that the main file requires sensor.c
 # DEPS       = sensor
 # NOTE: This DEPS isn't compiled here. DEPS files should be compiled in subdir
-DEPS       = sensor
+DEPS       = MotorDriver sensor DEV_Config dev_hardware_i2c sysfs_gpio PCA9685 MotorDriver 
 
 ADD_FILE   = $(OUTPUT)
 #
