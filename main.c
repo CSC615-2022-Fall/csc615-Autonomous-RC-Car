@@ -54,13 +54,13 @@ int main(int argc, char *argv[]) {
 	// Pointer for input init
 	int reflLeftInput = 0;
 	int* reflLeftInputPtr = &reflLeftInput;
-	setupSimpleSensor(REFL_L, reflLeftInputPtr); // setup thread
+	setupSimpleSensor(REFL_L, reflLeftInputPtr); // setup and start thread
 
 	// Right Reflective Sensor Init
 	// Pointer for input init
 	int reflRightInput = 0;
 	int* reflRightInputPtr = &reflRightInput;
-	setupSimpleSensor(REFL_R, reflRightInputPtr); // setup thread
+	setupSimpleSensor(REFL_R, reflRightInputPtr); // setup and start thread
     
 
 	// flag init
@@ -73,21 +73,59 @@ int main(int argc, char *argv[]) {
 	while (running) {
 		// decision handling here
 
-		// Sensor and Motor test
-		if (*reflLeftInputPtr == 1) {
-			Motor_Run(MOTORA, FORWARD, 100);
-		} else {
+		// MOTORA = Left Motor
+		// MOTORB = Right Motor
+
+		// Follow line test
+		// Uses two reflective sensors at the front, 1 for each side, infront of the wheels
+		// Car steers by powering 1 side of motor(s) and stopping/reversing the other
+		// Follows the line by steering towards the the sensor that sees black, meaning
+		// if a sensor sees black, stop/reverse the corresponding wheel, otherwise continue moving forwards
+		if (*reflLeftInputPtr == 1) { // 1 = ON BLACK
+			// STOP
 			Motor_Run(MOTORA, FORWARD, 0);
+			// TODO: Test with reversing if stopping is not enough
+			// TODO: Test with slowing down if stopping is too much
+			// TODO: Test with incrementally slowing down/reversing if none of the above work
+		} else { // 0 = ON WHITE
+			// CONTINUE
+			Motor_Run(MOTORA, FORWARD, 100);
 		}
 
-		if (*reflRightInputPtr == 1) {
-			Motor_Run(MOTORB, FORWARD, 100);
-		} else {
+		if (*reflRightInputPtr == 1) { // 1 = ON BLACK
+			// STOP
 			Motor_Run(MOTORB, FORWARD, 0);
+		} else { // 0 = ON WHITE
+			// CONTINUE
+			Motor_Run(MOTORB, FORWARD, 100);
 		}
+
+		// Obstruction test
+		/*
+			if front echo sensor sees object AND not running this subroutine then
+				full stop
+				90 degree turn left
+				move forwards slightly
+				repeat move forwards at 30% until right echo sensor does not see object
+				move forwards slightly
+				90 degree turn right
+				repeat move forwards at 50% until right echo sensor sees object
+				repeat move forwards at 30% until right echo sensor does not see object
+				move forwards slightly
+				90 degree turn right
+				repeat move forwards at 30% until left reflective sensor see black
+				stop left
+				repeat move right forwards at 20% until right sensor sees black, if not on black already
+				repeat move right forwards at 20% until right sensor sees white
+			done
+			NOTE: This strat relies on if the car can turn with a pivot under a specific front wheel, by setting one side to stop, and one side to move. 
+		*/
 
 	}
-    
+
+	// STOP
+	Motor_Run(MOTORA, FORWARD, 0);
+    Motor_Run(MOTORB, FORWARD, 0);
 
 	// Cleanup
 	gpioTerminate();
