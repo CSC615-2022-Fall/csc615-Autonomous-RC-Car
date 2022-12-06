@@ -1,26 +1,14 @@
 #ifndef SENSORDRIVER_H
 #define SENSORDRIVER_H
 
-#define SENSOR_TYPE_LINE 0
-#define SENSOR_TYPE_ECHO 1
-
-#define RUN_OFF 0
-#define RUN_ON 1
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
+#include "MacroId/SensorData.h"
+#include "MacroId/MacroDefinitions.h"
+#include "ThreadHandler/ThreadSensor.h"
 
-typedef struct Sensor {
-    int sensorType;
-
-    int gpio_line; // GPIO for Line sensor
-    int gpio_echo; // GPIO for Echo sensor
-    int gpio_trig; // GPIO for Echo sensor
-
-    int data; // Contains the output of the sensors
-} Sensor;
-
+// Internal Data
 typedef struct SensorDriver {
     int isRunning;
 
@@ -29,6 +17,7 @@ typedef struct SensorDriver {
 
     Sensor** sensors;
     pthread_t** _threads;
+    ThreadArgs** _thread_arguments;
 } SensorDriver;
 
 extern SensorDriver* _sensor_driver;

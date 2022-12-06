@@ -18,14 +18,18 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "src/sensor.h"
+#include "src/SensorDriver.h"
 #include "src/External_Libraries/MotorDriver.h"
+#include "src/MacroId/SensorData.h"
+#include "src/MacroId/MacroDefinitions.h"
 
 // GPIO Pin Numbers
-#define REFL_L 20 // Reflective sensor left
-#define REFL_R 21 // Reflective sensor right
+#define GPIO_LEFT_LINE_SENSOR 20 // Reflective sensor left
+#define GPIO_RIGHT_LINE_SENSOR 21 // Reflective sensor right
 
-// Flag to tell loops when to stop
+// SensorDriver Config
+#define MAX_NUM_OF_SENSORS 10
+
 int running;
 
 // sigint handler for cntl-c
@@ -33,11 +37,17 @@ void sigint(int sig) {
 	running = 0;
 	Motor_Run(MOTORA, FORWARD, 0);
     Motor_Run(MOTORB, FORWARD, 0);
-	gpioTerminate();
-	cleanupSensors();
+	terminate_sensor_driver();
+	// TODO: Terminate GPIO
+	// TODO: Cleanup sensors
 }
 
 int main(int argc, char *argv[]) {
+	// Data to use
+	int* left_line_sensor;
+	int* right_line_sensor;
+	// Flag to tell loops when to stop
+
 	// GPIO Init
 	if (gpioInitialise() < 0) {
 		fprintf(stderr, "pigpio initialisation failed\n");
@@ -47,51 +57,44 @@ int main(int argc, char *argv[]) {
 	// I2C, PWM, MOTOR HAT Init
 	Motor_Init();
 
-    gpioSetMode(REFL_L, PI_INPUT);
-    gpioSetMode(REFL_R, PI_INPUT);
+    gpioSetMode(GPIO_LEFT_LINE_SENSOR, PI_INPUT);
+    gpioSetMode(GPIO_RIGHT_LINE_SENSOR, PI_INPUT);
 
-	// Left Reflective Sensor Init
-	// Pointer for input init
-	int reflLeftInput = 0;
-	int* reflLeftInputPtr = &reflLeftInput;
-	setupSimpleSensor(REFL_L, reflLeftInputPtr); // setup thread
+	// Init Sensors here
+	init_sensor_driver(MAX_NUM_OF_SENSORS);
 
-	// Right Reflective Sensor Init
-	// Pointer for input init
-	int reflRightInput = 0;
-	int* reflRightInputPtr = &reflRightInput;
-	setupSimpleSensor(REFL_R, reflRightInputPtr); // setup thread
-    
-
-	// flag init
-	running = 1;
+	// Add sensors
+	// Left Line Sensor
+	Sensor* currentSensor = new_line_sensor(GPIO_LEFT_LINE_SENSOR);
+	left_line_sensor = &(currentSensor->data);
+	// Right Line Sensor
+	currentSensor = new_line_sensor(GPIO_RIGHT_LINE_SENSOR);
+	right_line_sensor = &(currentSensor->data);
 
 	signal(SIGINT, sigint);
 
 	// BUTTON SIGNAL GOES HERE
 
-	while (running) {
+	running = RUN_ON;
+	while (running = RUN_ON) {
 		// decision handling here
 
 		// Sensor and Motor test
-		if (*reflLeftInputPtr == 1) {
+		if (*left_line_sensor = OFF_LINE) {
 			Motor_Run(MOTORA, FORWARD, 100);
 		} else {
 			Motor_Run(MOTORA, FORWARD, 0);
 		}
 
-		if (*reflRightInputPtr == 1) {
+		if (*left_line_sensor == OFF_LINE) {
 			Motor_Run(MOTORB, FORWARD, 100);
 		} else {
 			Motor_Run(MOTORB, FORWARD, 0);
 		}
-
 	}
     
-
 	// Cleanup
-	gpioTerminate();
-	cleanupSensors();
+	terminate_sensor_driver();
 
 	return 0;
 }

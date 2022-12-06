@@ -22,7 +22,7 @@
 #
 # Example, let's say we want to add foo.c and bar.c
 # ADD_FILE   = foo bar
-ADD_FILE   = SensorDriver ThreadSensor
+ADD_FILE   = ThreadSensor
 #
 # ----------------- End of Configurations -----------------
 
@@ -39,8 +39,6 @@ all: deps $(OBJ)
 # Then you should append this line below deps:
 # $(MAKE) -C ./src
 deps:
-	$(MAKE) -C External_Libraries
-	$(MAKE) -C ThreadHandler
 
 $(DIR_O)/%.o: %.c
 	$(CC) -c -o $@ $< $(CFLAGS)
