@@ -14,4 +14,12 @@
 #define ON_LINE 1
 #define OFF_LINE 0
 
+// Motor
+#define FORWARD 1
+#define BACKWARD 0
+// Below are used for config settings
+// In case that motor is spinning the wrong way, we can change it
+#define NORMAL_CONTROL 0
+#define REVERSE_CONTROL 1
+
 #endif

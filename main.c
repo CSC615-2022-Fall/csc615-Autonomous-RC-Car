@@ -19,9 +19,12 @@
 #include <unistd.h>
 
 #include "src/SensorDriver.h"
-#include "src/External_Libraries/MotorDriver.h"
+#include "src/MotorDriver.h"
 #include "src/MacroId/SensorData.h"
 #include "src/MacroId/MacroDefinitions.h"
+
+// I2C Hat Address
+#define I2C_HAT_ADDRESS (char) 0x40
 
 // GPIO Pin Numbers
 #define GPIO_LEFT_LINE_SENSOR 20 // Reflective sensor left
@@ -30,13 +33,16 @@
 // SensorDriver Config
 #define MAX_NUM_OF_SENSORS 10
 
+#define LEFT_MOTOR 0
+#define RIGHT_MOTOR 1
+
 int running;
 
 // sigint handler for cntl-c
 void sigint(int sig) {
 	running = 0;
-	Motor_Run(MOTORA, FORWARD, 0);
-    Motor_Run(MOTORB, FORWARD, 0);
+	// Motor_Run(MOTORA, FORWARD, 0);
+    // Motor_Run(MOTORB, FORWARD, 0);
 	terminate_sensor_driver();
 	// TODO: Terminate GPIO
 	// TODO: Cleanup sensors
@@ -46,7 +52,6 @@ int main(int argc, char *argv[]) {
 	// Data to use
 	int* left_line_sensor;
 	int* right_line_sensor;
-	// Flag to tell loops when to stop
 
 	// GPIO Init
 	if (gpioInitialise() < 0) {
@@ -55,7 +60,9 @@ int main(int argc, char *argv[]) {
 	}
 
 	// I2C, PWM, MOTOR HAT Init
-	Motor_Init();
+	init_motor_driver(I2C_HAT_ADDRESS, 100, 2);
+	add_motor_to_driver(100, PWMA, AIN2, AIN1);
+	add_motor_to_driver(100, PWMB, BIN2, BIN1);
 
     gpioSetMode(GPIO_LEFT_LINE_SENSOR, PI_INPUT);
     gpioSetMode(GPIO_RIGHT_LINE_SENSOR, PI_INPUT);
@@ -79,22 +86,27 @@ int main(int argc, char *argv[]) {
 	while (running = RUN_ON) {
 		// decision handling here
 
-		// Sensor and Motor test
-		if (*left_line_sensor = OFF_LINE) {
-			Motor_Run(MOTORA, FORWARD, 100);
-		} else {
-			Motor_Run(MOTORA, FORWARD, 0);
-		}
+		
 
-		if (*left_line_sensor == OFF_LINE) {
-			Motor_Run(MOTORB, FORWARD, 100);
-		} else {
-			Motor_Run(MOTORB, FORWARD, 0);
-		}
+		// Sensor and Motor test
+		// if (*left_line_sensor = ON_LINE) {
+		// 	// Motor_Run(MOTORA, FORWARD, 100);
+		// } else {
+		// 	// Motor_Run(MOTORA, FORWARD, 0);
+		// }
+
+		// if (*left_line_sensor == ON_LINE) {
+		// 	// Motor_Run(MOTORB, FORWARD, 100);
+		// } else {
+		// 	// Motor_Run(MOTORB, FORWARD, 0);
+		// }
+		set_motor_speed(LEFT_MOTOR, 100);
+		set_motor_speed(RIGHT_MOTOR, 50);
 	}
     
 	// Cleanup
 	terminate_sensor_driver();
+	terminate_motor_driver();
 
 	return 0;
 }

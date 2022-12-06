@@ -22,7 +22,7 @@
 #
 # Example, let's say we want to add foo.c and bar.c
 # ADD_FILE   = foo bar
-ADD_FILE   = SensorDriver ThreadSensor
+ADD_FILE   = SensorDriver ThreadSensor MotorDriver
 #
 # ----------------- End of Configurations -----------------
 
