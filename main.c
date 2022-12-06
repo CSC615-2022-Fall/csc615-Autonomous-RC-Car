@@ -44,6 +44,7 @@ void sigint(int sig) {
 	// Motor_Run(MOTORA, FORWARD, 0);
     // Motor_Run(MOTORB, FORWARD, 0);
 	terminate_sensor_driver();
+	terminate_motor_driver();
 	// TODO: Terminate GPIO
 	// TODO: Cleanup sensors
 }

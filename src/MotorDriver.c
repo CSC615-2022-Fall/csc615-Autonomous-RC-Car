@@ -10,10 +10,17 @@ MotorDriver* _motor_driver;
  */
 void init_motor_driver(char i2c_address, int pwm_freq, int max_num_of_motors)
 {
+    if(max_num_of_motors < 1) 
+    {
+        printf("Warning: max_num_of_motor is less than 1\n");
+        return;
+    }
+    _motor_driver = malloc(sizeof(MotorDriver));
     PCA9685_Init(i2c_address); // TODO: Test this later because main is passing an int
     PCA9685_SetPWMFreq(pwm_freq);
+    _motor_driver->num_of_motors = 0;
     _motor_driver->motor_capacity = max_num_of_motors;
-    _motor_driver = malloc(sizeof(MotorDriver) * max_num_of_motors);
+    _motor_driver->motors = malloc(sizeof(Motor) * max_num_of_motors);
 }
 
 
@@ -47,7 +54,7 @@ void add_motor_to_driver(int base_speed, int pwm_pin, int positive_motor_pin, in
     current_motor->negative_pole = negative_motor_pin;
 
     // Add the driver
-    _motor_driver->motors[index];
+    _motor_driver->motors[index] = current_motor;
     _motor_driver->num_of_motors++; // Increment counter
 }
 
@@ -65,7 +72,7 @@ void set_motor_direction(int index, int direction)
         PCA9685_SetLevel(current_motor->positive_pole, 1);
         PCA9685_SetLevel(current_motor->negative_pole, 0);
     }
-    else if(direction == FORWARD)
+    else if(direction == BACKWARD)
     {
         PCA9685_SetLevel(current_motor->positive_pole, 0);
         PCA9685_SetLevel(current_motor->negative_pole, 1);
@@ -78,7 +85,7 @@ void set_motor_direction(int index, int direction)
 
 void set_motor_speed(int index, int speed_percentage)
 {
-    PCA9685_SetPwmDutyCycle(_motor_driver->motors[index]->pwm_pin, 0);
+    PCA9685_SetPwmDutyCycle(_motor_driver->motors[index]->pwm_pin, speed_percentage);
 }
 
 void set_all_motor_speed(int index, int speed_percentage)
@@ -87,7 +94,7 @@ void set_all_motor_speed(int index, int speed_percentage)
     for(int i = 0; i < _motor_driver->num_of_motors; i++)
     {
         current_motor = _motor_driver->motors[i];
-        PCA9685_SetPwmDutyCycle(current_motor->pwm_pin, 0);
+        PCA9685_SetPwmDutyCycle(current_motor->pwm_pin, speed_percentage);
     }
 }
 
