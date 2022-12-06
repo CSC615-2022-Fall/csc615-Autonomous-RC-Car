@@ -40,7 +40,7 @@ int running;
 
 // sigint handler for cntl-c
 void sigint(int sig) {
-	running = 0;
+	running = RUN_OFF;
 	// Motor_Run(MOTORA, FORWARD, 0);
     // Motor_Run(MOTORB, FORWARD, 0);
 	terminate_sensor_driver();
@@ -61,7 +61,8 @@ int main(int argc, char *argv[]) {
 	}
 
 	// I2C, PWM, MOTOR HAT Init
-	init_motor_driver(I2C_HAT_ADDRESS, 100, 2);
+	// init_motor_driver(I2C_HAT_ADDRESS, 100, 2);
+	init_motor_driver(0x40, 100, 2); // Not sure if this fixes some bug
 	add_motor_to_driver(100, PWMA, AIN2, AIN1);
 	add_motor_to_driver(100, PWMB, BIN2, BIN1);
 
@@ -84,7 +85,7 @@ int main(int argc, char *argv[]) {
 	// BUTTON SIGNAL GOES HERE
 
 	running = RUN_ON;
-	while (running = RUN_ON) {
+	while (running == RUN_ON) {
 		// decision handling here
 
 		

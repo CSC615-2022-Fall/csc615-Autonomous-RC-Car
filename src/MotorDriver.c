@@ -88,7 +88,7 @@ void set_motor_speed(int index, int speed_percentage)
     PCA9685_SetPwmDutyCycle(_motor_driver->motors[index]->pwm_pin, speed_percentage);
 }
 
-void set_all_motor_speed(int index, int speed_percentage)
+void set_all_motors_speed(int index, int speed_percentage)
 {
     Motor* current_motor;
     for(int i = 0; i < _motor_driver->num_of_motors; i++)
@@ -100,14 +100,8 @@ void set_all_motor_speed(int index, int speed_percentage)
 
 /**
  * Motor stop rotation.
- *
- * @param motor: Motor A and Motor B.
- *
- * Example:
- * @code
- * Motor_Stop(MOTORA);
  */
-void set_all_motor_to_stop()
+void set_all_motors_to_stop()
 {
     Motor* current_motor;
     for(int i = 0; i < _motor_driver->num_of_motors; i++)
