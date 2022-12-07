@@ -71,6 +71,7 @@ int main(int argc, char *argv[]) {
 	// BUTTON SIGNAL GOES HERE
 
 	while (running) {
+		print("Hi\n");
 		// decision handling here
 
 		// MOTORA = Left Motor
