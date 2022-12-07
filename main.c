@@ -73,6 +73,7 @@ int main(int argc, char *argv[]) {
 	// Sets up the initial direction
 	set_motor_direction_forward(LEFT_MOTOR);
 	set_motor_direction_forward(RIGHT_MOTOR);
+	set_all_motors_to_stop();
 
     gpioSetMode(GPIO_LEFT_LINE_SENSOR, PI_INPUT);
     gpioSetMode(GPIO_RIGHT_LINE_SENSOR, PI_INPUT);

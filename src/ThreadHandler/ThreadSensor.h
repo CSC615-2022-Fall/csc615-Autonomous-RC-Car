@@ -5,10 +5,13 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <pigpio.h>
+#include <time.h>
 
 // Not a fan of using relative path but don't want to use too much time on this
 #include "../MacroId/SensorData.h" 
 #include "../MacroId/MacroDefinitions.h"
+
+#define NANO_PER_SEC 1000000000.0
 
 /*
 * The first data should be the pointer to isRunning in the SensorDriver
