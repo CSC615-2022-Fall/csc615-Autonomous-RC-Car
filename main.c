@@ -43,8 +43,10 @@ void sigint(int sig) {
 	running = RUN_OFF;
 	// Motor_Run(MOTORA, FORWARD, 0);
     // Motor_Run(MOTORB, FORWARD, 0);
+	set_all_motor_to_stop();
 	terminate_sensor_driver();
 	terminate_motor_driver();
+	gpioTerminate();
 	// TODO: Terminate GPIO
 	// TODO: Cleanup sensors
 }
@@ -107,8 +109,10 @@ int main(int argc, char *argv[]) {
 	}
     
 	// Cleanup
+	set_all_motor_to_stop();
 	terminate_sensor_driver();
 	terminate_motor_driver();
+	gpioTerminate();
 
 	return 0;
 }
