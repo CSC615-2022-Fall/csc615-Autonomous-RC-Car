@@ -36,6 +36,7 @@ void terminate_motor_driver()
 
         free(current_motor);
     }
+    free(_motor_driver->motors);
     free(_motor_driver);
 }
 
@@ -59,42 +60,43 @@ void add_motor_to_driver(int base_speed, int pwm_pin, int positive_motor_pin, in
 }
 
 /**
- * Motor move forward or backward
- * This doesn't handle actual movement!
- * Only the polarity changes
- * direction should be either FORWARD or BACKWARD
+ * Set the motor for a specific motor direction to forward.
  */
-void set_motor_direction(int index, int direction)
+void set_motor_direction_forward(int index)
 {
     Motor* current_motor = _motor_driver->motors[index];
-    if(direction == FORWARD)
-    {
-        PCA9685_SetLevel(current_motor->positive_pole, 1);
-        PCA9685_SetLevel(current_motor->negative_pole, 0);
-    }
-    else if(direction == BACKWARD)
-    {
-        PCA9685_SetLevel(current_motor->positive_pole, 0);
-        PCA9685_SetLevel(current_motor->negative_pole, 1);
-    }
-    else
-    {
-        printf("Direction not found\n");
-    }
+    PCA9685_SetLevel(current_motor->positive_pole, 1);
+    PCA9685_SetLevel(current_motor->negative_pole, 0);
 }
 
-void set_motor_speed(int index, int speed_percentage)
+/**
+ * Set the motor for a specific motor direction to backward.
+ */
+void set_motor_direction_backward(int index)
 {
-    PCA9685_SetPwmDutyCycle(_motor_driver->motors[index]->pwm_pin, speed_percentage);
+    Motor* current_motor = _motor_driver->motors[index];
+    PCA9685_SetLevel(current_motor->positive_pole, 0);
+    PCA9685_SetLevel(current_motor->negative_pole, 1);
 }
 
-void set_all_motors_speed(int index, int speed_percentage)
+/**
+ * Set the motor speed for a single motor given the index 
+ */
+void set_motor_speed(int index, int speed)
+{
+    PCA9685_SetPwmDutyCycle(_motor_driver->motors[index]->pwm_pin, speed);
+}
+
+/**
+ * Sets all motor to a specific speed
+ */
+void set_all_motors_speed(int speed)
 {
     Motor* current_motor;
     for(int i = 0; i < _motor_driver->num_of_motors; i++)
     {
         current_motor = _motor_driver->motors[i];
-        PCA9685_SetPwmDutyCycle(current_motor->pwm_pin, speed_percentage);
+        PCA9685_SetPwmDutyCycle(current_motor->pwm_pin, speed);
     }
 }
 

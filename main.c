@@ -43,7 +43,7 @@ void sigint(int sig) {
 	running = RUN_OFF;
 	// Motor_Run(MOTORA, FORWARD, 0);
     // Motor_Run(MOTORB, FORWARD, 0);
-	// set_all_motor_to_stop();
+	set_all_motors_to_stop();
 	set_motor_speed(LEFT_MOTOR, 0);
 	set_motor_speed(RIGHT_MOTOR, 0);
 	terminate_sensor_driver();
@@ -67,8 +67,12 @@ int main(int argc, char *argv[]) {
 	// I2C, PWM, MOTOR HAT Init
 	// init_motor_driver(I2C_HAT_ADDRESS, 100, 2);
 	init_motor_driver(0x40, 100, 2); // Not sure if this fixes some bug
+	// Add Motors
 	add_motor_to_driver(100, PWMA, AIN2, AIN1);
 	add_motor_to_driver(100, PWMB, BIN2, BIN1);
+	// Sets up the initial direction
+	set_motor_direction_forward(LEFT_MOTOR);
+	set_motor_direction_forward(RIGHT_MOTOR);
 
     gpioSetMode(GPIO_LEFT_LINE_SENSOR, PI_INPUT);
     gpioSetMode(GPIO_RIGHT_LINE_SENSOR, PI_INPUT);
@@ -106,14 +110,13 @@ int main(int argc, char *argv[]) {
 		// } else {
 		// 	// Motor_Run(MOTORB, FORWARD, 0);
 		// }
-		set_motor_speed(LEFT_MOTOR, 100);
-		set_motor_speed(RIGHT_MOTOR, 50);
+		set_all_motors_speed(100);
 	}
     
 	// Cleanup
-	// set_all_motor_to_stop();
-	set_motor_speed(LEFT_MOTOR, 0);
-	set_motor_speed(RIGHT_MOTOR, 0);
+	set_all_motors_to_stop();
+	// set_motor_speed(LEFT_MOTOR, 0);
+	// set_motor_speed(RIGHT_MOTOR, 0);
 	terminate_sensor_driver();
 	terminate_motor_driver();
 	gpioTerminate();
