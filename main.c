@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
 	// init_motor_driver(I2C_HAT_ADDRESS, 100, 2);
 	init_motor_driver(0x40, 100, 2); // Not sure if this fixes some bug
 	// Add Motors
-	add_motor_to_driver(100, PWMA, AIN2, AIN1);
+	add_motor_to_driver(100, PWMA, AIN1, AIN2);
 	add_motor_to_driver(100, PWMB, BIN2, BIN1);
 	// Sets up the initial direction
 	set_motor_direction_forward(LEFT_MOTOR);
@@ -88,6 +88,9 @@ int main(int argc, char *argv[]) {
 	// Right Line Sensor
 	currentSensor = new_line_sensor(GPIO_RIGHT_LINE_SENSOR);
 	right_line_sensor = &(currentSensor->data);
+    
+    // Start sensors
+    start_sensors();
 
 	signal(SIGINT, sigint);
 
@@ -111,7 +114,23 @@ int main(int argc, char *argv[]) {
 		// } else {
 		// 	// Motor_Run(MOTORB, FORWARD, 0);
 		// }
-		set_all_motors_speed(100);
+        // printf("left_line_sensor = %d\n", *left_line_sensor);
+        // printf("right_line_sensor = %d\n", *right_line_sensor);
+        if (*left_line_sensor == ON_LINE) 
+        {
+            set_motor_speed(LEFT_MOTOR, 65);
+        } else
+        {
+            set_motor_speed(LEFT_MOTOR, 0);
+        }
+
+        if (*right_line_sensor == ON_LINE) 
+        {
+            set_motor_speed(RIGHT_MOTOR, 65);
+        } else
+        {
+            set_motor_speed(RIGHT_MOTOR, 0);
+        }
 	}
     
 	// Cleanup
