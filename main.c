@@ -31,6 +31,7 @@ int running;
 
 // sigint handler for cntl-c
 void sigint(int sig) {
+	printf("STOPPING\n");
 	running = 0;
 	Motor_Run(MOTORA, FORWARD, 0);
     Motor_Run(MOTORB, FORWARD, 0);
@@ -126,6 +127,7 @@ int main(int argc, char *argv[]) {
 		// NOTE: This strat relies on if the car can turn with a pivot under a specific front wheel, by setting one side to stop, and one side to move. 
 
 	}
+	printf("DONE\n");
 
 	// STOP
 	Motor_Run(MOTORA, FORWARD, 0);
