@@ -88,21 +88,21 @@ int main(int argc, char *argv[]) {
 		// if a sensor sees black, stop/reverse the corresponding wheel, otherwise continue moving forwards
 		if (*reflLeftInputPtr == 1) { // 1 = ON BLACK
 			// STOP
-			Motor_Run(MOTORA, FORWARD, 0);
+			Motor_Run(MOTORA, BACKWARD, 40);
 			// TODO: Test with reversing if stopping is not enough
 			// TODO: Test with slowing down if stopping is too much
 			// TODO: Test with incrementally slowing down/reversing if none of the above work
 		} else { // 0 = ON WHITE
 			// CONTINUE
-			Motor_Run(MOTORA, FORWARD, 100);
+			Motor_Run(MOTORA, FORWARD, 65);
 		}
 
 		if (*reflRightInputPtr == 1) { // 1 = ON BLACK
 			// STOP
-			Motor_Run(MOTORB, FORWARD, 0);
+			Motor_Run(MOTORB, BACKWARD, 40);
 		} else { // 0 = ON WHITE
 			// CONTINUE
-			Motor_Run(MOTORB, FORWARD, 100);
+			Motor_Run(MOTORB, FORWARD, 65);
 		}
 
 		// Obstruction test

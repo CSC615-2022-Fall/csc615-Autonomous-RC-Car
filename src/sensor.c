@@ -55,7 +55,7 @@ void *handleSimpleSensor(void *pthread_args) {
     while (sensorsRunning) {
         // load input from gpio pin into int* input
         *input = gpioRead(gpioPin);
-        time_sleep(0.5);
+        time_sleep(0.05);
     }
     pthread_exit(NULL);
 }
