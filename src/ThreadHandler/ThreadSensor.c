@@ -29,10 +29,18 @@ void* thread_collect_echo_sensor_data(void* threadArgs)
 }
 void* thread_collect_line_sensor_data(void* threadArgs)
 {
-    /**
-     * TODO: make actual implementation using external libraries or homework assignment.
-     * Code below are just template
-     */
-    printf("Collecting line data\n");
+    ThreadArgs* args = (ThreadArgs*) threadArgs;
+    int* isRunning = args->isRunning;
+    Sensor* sensor = args->sensor;
+    int pin = sensor->gpio_line;
+
+    while(*isRunning == RUN_ON)
+    {
+        sensor->data = gpioRead(pin);
+        temp--;
+        if(temp < 0){
+            pthread_exit(NULL);
+        }
+    }
     pthread_exit(NULL);
 }
