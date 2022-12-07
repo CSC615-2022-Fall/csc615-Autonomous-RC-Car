@@ -41,13 +41,12 @@ int running;
 // sigint handler for cntl-c
 void sigint(int sig) {
 	running = RUN_OFF;
-	// Motor_Run(MOTORA, FORWARD, 0);
-    // Motor_Run(MOTORB, FORWARD, 0);
-	set_all_motors_to_stop();
-	set_motor_speed(LEFT_MOTOR, 0);
-	set_motor_speed(RIGHT_MOTOR, 0);
+
 	terminate_sensor_driver();
+
+	set_all_motors_to_stop();
 	terminate_motor_driver();
+
 	gpioTerminate();
 	// TODO: Terminate GPIO
 	// TODO: Cleanup sensors
@@ -121,7 +120,7 @@ int main(int argc, char *argv[]) {
             set_motor_speed(LEFT_MOTOR, 65);
         } else
         {
-            set_motor_speed(LEFT_MOTOR, 0);
+            set_motor_speed(LEFT_MOTOR, 40);
         }
 
         if (*right_line_sensor == ON_LINE) 
@@ -129,7 +128,7 @@ int main(int argc, char *argv[]) {
             set_motor_speed(RIGHT_MOTOR, 65);
         } else
         {
-            set_motor_speed(RIGHT_MOTOR, 0);
+            set_motor_speed(RIGHT_MOTOR, 40);
         }
 	}
     

@@ -8,7 +8,7 @@ MotorDriver* _motor_driver;
  * Example:
  * Motor_Init();
  */
-void init_motor_driver(char i2c_address, int pwm_freq, int max_num_of_motors)
+void init_motor_driver(char i2c_address, UWORD pwm_freq, int max_num_of_motors)
 {
     if(max_num_of_motors < 1) 
     {
@@ -35,12 +35,13 @@ void terminate_motor_driver()
         PCA9685_SetPwmDutyCycle(current_motor->pwm_pin, 0);
 
         free(current_motor);
+        _motor_driver->motors[i] = NULL;
     }
     free(_motor_driver->motors);
     free(_motor_driver);
 }
 
-void add_motor_to_driver(int base_speed, int pwm_pin, int positive_motor_pin, int negative_motor_pin)
+void add_motor_to_driver(UWORD base_speed, UBYTE pwm_pin, UBYTE positive_motor_pin, UBYTE negative_motor_pin)
 {
     int index = _motor_driver->num_of_motors;
     if(index >= _motor_driver->motor_capacity)
@@ -82,7 +83,7 @@ void set_motor_direction_backward(int index)
 /**
  * Set the motor speed for a single motor given the index 
  */
-void set_motor_speed(int index, int speed)
+void set_motor_speed(int index, UWORD speed)
 {
     PCA9685_SetPwmDutyCycle(_motor_driver->motors[index]->pwm_pin, speed);
 }
@@ -90,7 +91,7 @@ void set_motor_speed(int index, int speed)
 /**
  * Sets all motor to a specific speed
  */
-void set_all_motors_speed(int speed)
+void set_all_motors_speed(UWORD speed)
 {
     Motor* current_motor;
     for(int i = 0; i < _motor_driver->num_of_motors; i++)

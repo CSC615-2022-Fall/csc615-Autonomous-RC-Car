@@ -11,12 +11,12 @@
 
 typedef struct Motor
 {
-    int base_speed;
+    UWORD base_speed;
 
     // Hardware wiring
-    int pwm_pin;
-    int positive_pole;
-    int negative_pole;
+    UBYTE pwm_pin;
+    UBYTE positive_pole;
+    UBYTE negative_pole;
 } Motor;
 
 #endif

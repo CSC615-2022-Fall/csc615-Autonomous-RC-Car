@@ -16,10 +16,10 @@
 // This means that if we are not recieving a signal,
 // then that means we are on track.
 // TLDR:
-// 0 for dark object
-// 1 for reflective object
-#define ON_LINE 0
-#define OFF_LINE 1 
+// 1 for dark object
+// 0 for reflective object
+#define ON_LINE 1
+#define OFF_LINE 0
 
 // Motor
 #define FORWARD 1
