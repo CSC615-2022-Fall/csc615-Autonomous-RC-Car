@@ -52,11 +52,11 @@ void *handleSimpleSensor(void *pthread_args) {
     simpleData *args = pthread_args;
     int gpioPin = args->gpioPin;
     int *input = args->input;
-    // while (sensorsRunning) {
+    while (sensorsRunning) {
         // load input from gpio pin into int* input
         *input = gpioRead(gpioPin);
         time_sleep(0.5);
-    // }
+    }
     pthread_exit(NULL);
 }
 
