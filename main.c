@@ -24,6 +24,7 @@
 // GPIO Pin Numbers
 #define REFL_L 20 // Reflective sensor left
 #define REFL_R 21 // Reflective sensor right
+#define BUTTON 26 // Button
 
 // Flag to tell loops when to stop
 int running;
@@ -49,6 +50,7 @@ int main(int argc, char *argv[]) {
 
     gpioSetMode(REFL_L, PI_INPUT);
     gpioSetMode(REFL_R, PI_INPUT);
+	gpioSetMode(BUTTON, PI_INPUT);
 
 	// Left Reflective Sensor Init
 	// Pointer for input init
@@ -68,10 +70,12 @@ int main(int argc, char *argv[]) {
 
 	signal(SIGINT, sigint);
 
-	// BUTTON SIGNAL GOES HERE
+	// Wait for BUTTON signal
+	printf("Waiting for button press...\n");
+	while (gpioRead(BUTTON) == 0) {}
+	printf("RUNNING\n");
 
 	while (running) {
-		printf("Hi\n");
 		// decision handling here
 
 		// MOTORA = Left Motor
@@ -102,25 +106,24 @@ int main(int argc, char *argv[]) {
 		}
 
 		// Obstruction test
-		/*
-			if front echo sensor sees object AND not running this subroutine then
-				full stop
-				90 degree turn left
-				move forwards slightly
-				repeat move forwards at 30% until right echo sensor does not see object
-				move forwards slightly
-				90 degree turn right
-				repeat move forwards at 50% until right echo sensor sees object
-				repeat move forwards at 30% until right echo sensor does not see object
-				move forwards slightly
-				90 degree turn right
-				repeat move forwards at 30% until left reflective sensor see black
-				stop left
-				repeat move right forwards at 20% until right sensor sees black, if not on black already
-				repeat move right forwards at 20% until right sensor sees white
-			done
-			NOTE: This strat relies on if the car can turn with a pivot under a specific front wheel, by setting one side to stop, and one side to move. 
-		*/
+		// if front echo sensor sees object AND not running this subroutine then
+		
+			// full stop
+			// 90 degree turn left
+			// move forwards slightly
+			// repeat move forwards at 30% until right echo sensor does not see object
+			// move forwards slightly
+			// 90 degree turn right
+			// repeat move forwards at 50% until right echo sensor sees object
+			// repeat move forwards at 30% until right echo sensor does not see object
+			// move forwards slightly
+			// 90 degree turn right
+			// repeat move forwards at 30% until left reflective sensor see black
+			// stop left
+			// repeat move right forwards at 20% until right sensor sees black, if not on black already
+			// repeat move right forwards at 20% until right sensor sees white
+		// done
+		// NOTE: This strat relies on if the car can turn with a pivot under a specific front wheel, by setting one side to stop, and one side to move. 
 
 	}
 
