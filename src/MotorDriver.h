@@ -26,6 +26,6 @@ void add_motor_to_driver(int base_speed, int pwm_pin, int positive_motor_pin, in
 void set_motor_direction(int index, int direction);
 void set_motor_speed(int index, int speed_percentage);
 void set_all_motor_speed(int index, int speed_percentage);
-void set_all_motor_to_stop();
+void set_all_motors_to_stop();
 
 #endif
