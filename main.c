@@ -29,6 +29,8 @@
 // GPIO Pin Numbers
 #define GPIO_LEFT_LINE_SENSOR 20 // Reflective sensor left
 #define GPIO_RIGHT_LINE_SENSOR 21 // Reflective sensor right
+#define GPIO_FRONT_ECHO_SENSOR_TRIG 19 // Front Echo Sensor Trigger
+#define GPIO_FRONT_ECHO_SENSOR_ECHO 13 // Front Echo Sensor Trigger
 
 // SensorDriver Config
 #define MAX_NUM_OF_SENSORS 10
@@ -47,6 +49,7 @@ int main(int argc, char *argv[]) {
 	// Data to use
 	int* left_line_sensor;
 	int* right_line_sensor;
+    int* front_echo_sensor;
 
 	// GPIO Init
 	if (gpioInitialise() < 0) {
@@ -67,6 +70,8 @@ int main(int argc, char *argv[]) {
 
     gpioSetMode(GPIO_LEFT_LINE_SENSOR, PI_INPUT);
     gpioSetMode(GPIO_RIGHT_LINE_SENSOR, PI_INPUT);
+    gpioSetMode(GPIO_FRONT_ECHO_SENSOR_TRIG, PI_OUTPUT);
+    gpioSetMode(GPIO_FRONT_ECHO_SENSOR_ECHO, PI_INPUT);
 
 	// Init Sensors here
 	init_sensor_driver(MAX_NUM_OF_SENSORS);
@@ -78,6 +83,10 @@ int main(int argc, char *argv[]) {
 	// Right Line Sensor
 	currentSensor = new_line_sensor(GPIO_RIGHT_LINE_SENSOR);
 	right_line_sensor = &(currentSensor->data);
+    // Front Echo Sensor
+    currentSensor = new_echo_sensor(GPIO_FRONT_ECHO_SENSOR_ECHO, GPIO_FRONT_ECHO_SENSOR_TRIG);
+    front_echo_sensor = &(currentSensor->data);
+    
     
     // Start sensors
     start_sensors();
@@ -106,6 +115,14 @@ int main(int argc, char *argv[]) {
 		// }
         // printf("left_line_sensor = %d\n", *left_line_sensor);
         // printf("right_line_sensor = %d\n", *right_line_sensor);
+        if (*front_echo_sensor < 30) // 10 is just an arbitrary threshold for now
+        {
+            // This is just a sample
+            // TODO: implement actual logic
+            set_all_motors_to_stop();
+            continue;
+        }
+
         if (*left_line_sensor == ON_LINE) 
         {
             set_motor_speed(LEFT_MOTOR, 65);
