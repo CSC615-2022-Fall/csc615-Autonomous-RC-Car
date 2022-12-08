@@ -27,6 +27,7 @@
 #define I2C_HAT_ADDRESS (char) 0x40
 
 // GPIO Pin Numbers
+#define GPIO_START_BUTTON 26
 #define GPIO_LEFT_LINE_SENSOR 20 // Reflective sensor left
 #define GPIO_RIGHT_LINE_SENSOR 21 // Reflective sensor right
 #define GPIO_FRONT_ECHO_SENSOR_TRIG 19 // Front Echo Sensor Trigger
@@ -94,6 +95,9 @@ int main(int argc, char *argv[]) {
 	signal(SIGINT, sigint);
 
 	// BUTTON SIGNAL GOES HERE
+    printf("Waiting for button press...\n");
+    while (gpioRead(GPIO_START_BUTTON) == 0) {}
+    printf("RUNNING\n");
 
 	running = RUN_ON;
 	while (running == RUN_ON) {
