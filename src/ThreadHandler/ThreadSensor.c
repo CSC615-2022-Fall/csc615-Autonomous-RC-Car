@@ -48,6 +48,7 @@ void* thread_collect_echo_sensor_data(void* threadArgs)
 
         printf("updating\n");
     }
+    printf("I STOPPED\n");
     pthread_exit(NULL);
 }
 
