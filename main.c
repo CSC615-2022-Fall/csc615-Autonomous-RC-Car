@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
   int rev_speed = 30;       // Reverse speed
   int turn_speed = 50;      // 90 Turning speed
   double turn_duration = 2; // 90 Turning duration
-  int use_left = 1;         // 0 = steer right around obstruction, 1 = steer left
+  int use_left = 1;         // 1 = using left sensor steer right around obstruction, 0 = using right steer left
   if (argc == 6) {
     speed = atoi(argv[1]);
     rev_speed = atoi(argv[2]);
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
 
   // I2C, PWM, MOTOR HAT Init
   // init_motor_driver(I2C_HAT_ADDRESS, 100, 2);
-  init_motor_driver(0x40, 1000, 2); // Not sure if this fixes some bug
+  init_motor_driver(0x40, 1000, 2);
   // Add Motors
   add_motor_to_driver(100, PWMA, AIN1, AIN2);
   add_motor_to_driver(100, PWMB, BIN2, BIN1);

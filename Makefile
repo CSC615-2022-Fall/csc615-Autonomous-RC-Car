@@ -64,7 +64,7 @@ TurnCalibrate: $(patsubst %,$(DIR_O)/%.o,TurnCalibrate) $(DEPS_PATH)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 clean:
-	rm -f $(DIR_O)/*.o $(OUTPUT)
+	rm -f $(DIR_O)/*.o $(OUTPUT) TurnCalibrate
 
 run: deps $(OUTPUT)
 	./$(OUTPUT) $(RUNOPTIONS)
