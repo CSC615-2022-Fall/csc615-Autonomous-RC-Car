@@ -53,9 +53,9 @@ int main(int argc, char *argv[]) {
 	int turn_speed = 50; // 90 Turning speed
 	double turn_duration = 2; // 90 Turning duration
 	if (argc == 4) {
-		speed = aoit(argv[0]);
-		rev_speed = aoit(argv[1]);
-		turn_speed = aoit(argv[2]);
+		speed = atoi(argv[0]);
+		rev_speed = atoi(argv[1]);
+		turn_speed = atoi(argv[2]);
 		turn_duration = atof(argv[3]);
 	}
 
