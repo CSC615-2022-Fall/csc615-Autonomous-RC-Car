@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	printf("Using arguments:\nSpeed: %d\nReverse Speed: %d\n90 Turn Speed: %d\n90 Turn Duration: %f\n", 
-		speed, rev_speed, turn_speed, turn_duration)
+		speed, rev_speed, turn_speed, turn_duration);
 
 	// Data to use
 	int* left_line_sensor;
