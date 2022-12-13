@@ -163,8 +163,8 @@ int main(int argc, char *argv[]) {
 			time_sleep(0.5);
 
 			// repeat move forwards until right echo sensor does not see object
-			set_motor_speed(RIGHT_MOTOR, 40);
-			set_motor_speed(LEFT_MOTOR, 40);
+			set_motor_speed(RIGHT_MOTOR, 50);
+			set_motor_speed(LEFT_MOTOR, 50);
 			set_motor_direction_forward(RIGHT_MOTOR);
 			set_motor_direction_forward(LEFT_MOTOR);
 			while(*back_echo_sensor < 30) usleep(100);
@@ -184,8 +184,8 @@ int main(int argc, char *argv[]) {
 			time_sleep(0.5);
 
 			// repeat move forwards until right echo sensor sees object
-			set_motor_speed(RIGHT_MOTOR, 40);
-			set_motor_speed(LEFT_MOTOR, 40);
+			set_motor_speed(RIGHT_MOTOR, 50);
+			set_motor_speed(LEFT_MOTOR, 50);
 			set_motor_direction_forward(RIGHT_MOTOR);
 			set_motor_direction_forward(LEFT_MOTOR);
 			while(*back_echo_sensor >= 30) usleep(100);
@@ -195,8 +195,8 @@ int main(int argc, char *argv[]) {
 			time_sleep(0.5);
 
 			// move forwards slightly
-			set_motor_speed(RIGHT_MOTOR, 40);
-			set_motor_speed(LEFT_MOTOR, 40);
+			set_motor_speed(RIGHT_MOTOR, 50);
+			set_motor_speed(LEFT_MOTOR, 50);
 			set_motor_direction_forward(RIGHT_MOTOR);
 			set_motor_direction_forward(LEFT_MOTOR);
 			time_sleep(0.05);
@@ -222,8 +222,8 @@ int main(int argc, char *argv[]) {
 			time_sleep(0.5);
 
 			// repeat move forwards until right reflective sensor see black
-			set_motor_speed(RIGHT_MOTOR, 40);
-			set_motor_speed(LEFT_MOTOR, 40);
+			set_motor_speed(RIGHT_MOTOR, 50);
+			set_motor_speed(LEFT_MOTOR, 50);
 			set_motor_direction_forward(RIGHT_MOTOR);
 			set_motor_direction_forward(LEFT_MOTOR);
 			while(*right_line_sensor == ON_LINE) usleep(100);
@@ -234,7 +234,7 @@ int main(int argc, char *argv[]) {
 
 			// repeat move left forwards until left sensor sees black
 			set_motor_speed(RIGHT_MOTOR, 0);
-			set_motor_speed(LEFT_MOTOR, 40);
+			set_motor_speed(LEFT_MOTOR, 50);
 			set_motor_direction_forward(RIGHT_MOTOR);
 			set_motor_direction_forward(LEFT_MOTOR);
 			while(*left_line_sensor == ON_LINE) usleep(100);
@@ -245,7 +245,7 @@ int main(int argc, char *argv[]) {
 
 			// repeat move left forwards until right sensor sees white
 			set_motor_speed(RIGHT_MOTOR, 0);
-			set_motor_speed(LEFT_MOTOR, 40);
+			set_motor_speed(LEFT_MOTOR, 50);
 			set_motor_direction_forward(RIGHT_MOTOR);
 			set_motor_direction_forward(LEFT_MOTOR);
 			while(*right_line_sensor == OFF_LINE) usleep(100);
