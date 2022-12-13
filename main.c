@@ -149,11 +149,12 @@ int main(int argc, char *argv[]) {
 			printf("AAAAA\n");
 
             set_all_motors_to_stop();
+			time_sleep(1);
 			set_motor_direction_backward(RIGHT_MOTOR);
-			set_motor_speed(RIGHT_MOTOR, 65);
-			set_motor_speed(LEFT_MOTOR, 65);
+			set_motor_speed(RIGHT_MOTOR, turn_speed);
+			set_motor_speed(LEFT_MOTOR, turn_speed);
 
-			time_sleep(2);
+			time_sleep(turn_duration);
 
 			set_motor_direction_forward(RIGHT_MOTOR);
 
@@ -162,7 +163,7 @@ int main(int argc, char *argv[]) {
 						
 			}
 			set_motor_direction_backward(LEFT_MOTOR);
-			time_sleep(2);
+			time_sleep(turn_duration);
 			set_motor_direction_forward(LEFT_MOTOR);
 
 			/*second turn*/
@@ -170,7 +171,7 @@ int main(int argc, char *argv[]) {
 
 			}
 			set_motor_direction_backward(LEFT_MOTOR);
-			time_sleep(2);
+			time_sleep(turn_duration);
 			set_motor_direction_forward(LEFT_MOTOR);
 
 			while(*right_line_sensor != ON_LINE) {
@@ -179,14 +180,14 @@ int main(int argc, char *argv[]) {
 
 			set_all_motors_to_stop();
 			set_motor_direction_forward(LEFT_MOTOR);
-			set_motor_speed(LEFT_MOTOR, 65);
+			set_motor_speed(LEFT_MOTOR, turn_speed);
 
 			while(*left_line_sensor == OFF_LINE) {
 							
 			}
 
 			set_motor_direction_forward(RIGHT_MOTOR);
-			set_motor_speed(RIGHT_MOTOR, 65);
+			set_motor_speed(RIGHT_MOTOR, turn_speed);
 
 			continue;
         }
