@@ -6,6 +6,7 @@
 #include <pthread.h>
 #include <pigpio.h>
 #include <time.h>
+#include <unistd.h>
 
 // Not a fan of using relative path but don't want to use too much time on this
 #include "../MacroId/SensorData.h" 

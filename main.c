@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
 
 			// repeat move forwards until right echo sensor does not see object
 			set_motor_direction_forward(RIGHT_MOTOR);
-			while(*back_echo_sensor < 30) {}
+			while(*back_echo_sensor < 30) usleep(100);
 
 			// 90 degree turn left
 			set_motor_direction_backward(LEFT_MOTOR);
@@ -169,10 +169,10 @@ int main(int argc, char *argv[]) {
 
 			// repeat move forwards until right echo sensor sees object
 			set_motor_direction_forward(LEFT_MOTOR);
-			while(*back_echo_sensor >= 30) {}
+			while(*back_echo_sensor >= 30) usleep(100);
 
 			// repeat move forwards until right echo sensor does not see object
-			while(*back_echo_sensor < 30) {}
+			while(*back_echo_sensor < 30) usleep(100);
 
 			// 90 degree turn left
 			set_motor_direction_backward(LEFT_MOTOR);
@@ -181,7 +181,7 @@ int main(int argc, char *argv[]) {
 			// repeat move forwards until right reflective sensor see black
 			set_motor_direction_forward(LEFT_MOTOR);
 			printf("%d %d\n", *right_line_sensor, OFF_LINE);
-			while(*right_line_sensor == OFF_LINE) {}
+			while(*right_line_sensor == OFF_LINE) usleep(100);
 
 			running = 0;
 			break;
