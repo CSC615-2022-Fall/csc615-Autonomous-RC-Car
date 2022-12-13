@@ -144,7 +144,7 @@ int main(int argc, char *argv[]) {
         //printf("front = %d\n", *front_echo_sensor);
         //printf("back = %d\n", *back_echo_sensor);
 		//time_sleep(0.5);
-        if (*front_echo_sensor < 15) // 10 is just an arbitrary threshold for now
+        if (*front_echo_sensor < 8) // 10 is just an arbitrary threshold for now
         {
 			printf("I SEE OBJECT FRONT\n");
 
