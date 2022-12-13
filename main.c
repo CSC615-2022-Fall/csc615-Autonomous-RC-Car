@@ -47,6 +47,21 @@ void sigint(int sig) {
 }
 
 int main(int argc, char *argv[]) {
+	// CMD Line Arguments
+	int speed = 65; // Normal speed
+	int rev_speed = 30; // Reverse speed
+	int turn_speed = 50; // 90 Turning speed
+	double turn_duration = 2; // 90 Turning duration
+	if (argc == 4) {
+		speed = aoit(argv[0]);
+		rev_speed = aoit(argv[1]);
+		turn_speed = aoit(argv[2]);
+		turn_duration = atof(argv[3]);
+	}
+
+	printf("Using arguments:\nSpeed: %d\nReverse Speed: %d\n90 Turn Speed: %d\n90 Turn Duration: %f\n", 
+		speed, rev_speed, turn_speed, turn_duration)
+
 	// Data to use
 	int* left_line_sensor;
 	int* right_line_sensor;
@@ -129,18 +144,22 @@ int main(int argc, char *argv[]) {
 
         if (*left_line_sensor == ON_LINE) 
         {
-            set_motor_speed(LEFT_MOTOR, 65);
+			set_motor_direction_forward(LEFT_MOTOR);
+            set_motor_speed(LEFT_MOTOR, speed);
         } else
         {
-            set_motor_speed(LEFT_MOTOR, 40);
+			set_motor_direction_backward(LEFT_MOTOR);
+            set_motor_speed(LEFT_MOTOR, rev_speed);
         }
 
         if (*right_line_sensor == ON_LINE) 
         {
-            set_motor_speed(RIGHT_MOTOR, 65);
+			set_motor_direction_forward(RIGHT_MOTOR);
+            set_motor_speed(RIGHT_MOTOR, speed);
         } else
         {
-            set_motor_speed(RIGHT_MOTOR, 40);
+			set_motor_direction_backward(RIGHT_MOTOR);
+            set_motor_speed(RIGHT_MOTOR, rev_speed);
         }
 	}
     
