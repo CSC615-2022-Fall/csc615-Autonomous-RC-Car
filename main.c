@@ -144,7 +144,7 @@ int main(int argc, char *argv[]) {
         //printf("front = %d\n", *front_echo_sensor);
         //printf("back = %d\n", *back_echo_sensor);
 		//time_sleep(0.5);
-        if (*front_echo_sensor < 30) // 10 is just an arbitrary threshold for now
+        if (*front_echo_sensor < 15) // 10 is just an arbitrary threshold for now
         {
 			printf("AAAAA\n");
 
@@ -157,8 +157,6 @@ int main(int argc, char *argv[]) {
 			time_sleep(turn_duration);
 
 			set_motor_direction_forward(RIGHT_MOTOR);
-
-			printf("%d\n", *back_echo_sensor);
 
 			/*first turn*/
 			while(*back_echo_sensor < 30) {
