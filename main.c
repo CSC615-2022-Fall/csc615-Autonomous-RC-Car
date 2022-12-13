@@ -141,9 +141,9 @@ int main(int argc, char *argv[]) {
 		// } else {
 		// 	// Motor_Run(MOTORB, FORWARD, 0);
 		// }
-        //printf("front = %d\n", *front_echo_sensor);
-        //printf("back = %d\n", *back_echo_sensor);
-		//time_sleep(0.05);
+        printf("front = %d\n", *front_echo_sensor);
+        printf("back = %d\n", *back_echo_sensor);
+		time_sleep(0.5);
         if (*front_echo_sensor < 30) // 10 is just an arbitrary threshold for now
         {
 			printf("AAAAA\n");
