@@ -52,11 +52,11 @@ int main(int argc, char *argv[]) {
 	int rev_speed = 30; // Reverse speed
 	int turn_speed = 50; // 90 Turning speed
 	double turn_duration = 2; // 90 Turning duration
-	if (argc == 4) {
-		speed = atoi(argv[0]);
-		rev_speed = atoi(argv[1]);
-		turn_speed = atoi(argv[2]);
-		turn_duration = atof(argv[3]);
+	if (argc == 5) {
+		speed = atoi(argv[1]);
+		rev_speed = atoi(argv[2]);
+		turn_speed = atoi(argv[3]);
+		turn_duration = atof(argv[4]);
 	}
 
 	printf("Using arguments:\nSpeed: %d\nReverse Speed: %d\n90 Turn Speed: %d\n90 Turn Duration: %f\n", 
@@ -109,12 +109,13 @@ int main(int argc, char *argv[]) {
 
 	signal(SIGINT, sigint);
 
+	running = RUN_ON;
+
 	// BUTTON SIGNAL GOES HERE
     printf("Waiting for button press...\n");
-    while (gpioRead(GPIO_START_BUTTON) == 0) {}
+    while (running == RUN_ON && gpioRead(GPIO_START_BUTTON) == 0) {}
     printf("RUNNING\n");
 
-	running = RUN_ON;
 	while (running == RUN_ON) {
 		// decision handling here
 
