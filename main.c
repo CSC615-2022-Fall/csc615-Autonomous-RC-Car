@@ -148,26 +148,31 @@ int main(int argc, char *argv[]) {
         {
 			printf("AAAAA\n");
 
+			// full stop
             set_all_motors_to_stop();
 			time_sleep(1);
+
 			set_motor_speed(RIGHT_MOTOR, turn_speed);
 			set_motor_speed(LEFT_MOTOR, turn_speed);
 
+			// 90 degree turn right
 			set_motor_direction_backward(RIGHT_MOTOR);
 			time_sleep(turn_duration);
 
+			// repeat move forwards until right echo sensor does not see object
 			set_motor_direction_forward(RIGHT_MOTOR);
-
-			/*first turn*/
 			while(*back_echo_sensor < 30) {}
 
+			// 90 degree turn left
 			set_motor_direction_backward(LEFT_MOTOR);
 			time_sleep(turn_duration);
 
+			// repeat move forwards until right echo sensor sees object
 			set_motor_direction_forward(LEFT_MOTOR);
+			while(*back_echo_sensor >= 30) {}
 
-			/*second turn*/
-			while(*back_echo_sensor > 30) {}
+			// repeat move forwards until right echo sensor does not see object
+			while(*back_echo_sensor < 30) {}
 
 			running = 0;
 			break;
