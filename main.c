@@ -91,8 +91,8 @@ int main(int argc, char *argv[]) {
     gpioSetMode(GPIO_RIGHT_LINE_SENSOR, PI_INPUT);
     gpioSetMode(GPIO_FRONT_ECHO_SENSOR_TRIG, PI_OUTPUT);
     gpioSetMode(GPIO_FRONT_ECHO_SENSOR_ECHO, PI_INPUT);
-    gpioSetMode(GPIO_BACK_ECHO_SENSOR_TRIG, PI_OUTPUT);
-    gpioSetMode(GPIO_BACK_ECHO_SENSOR_ECHO, PI_INPUT);
+    //gpioSetMode(GPIO_BACK_ECHO_SENSOR_TRIG, PI_OUTPUT);
+    //gpioSetMode(GPIO_BACK_ECHO_SENSOR_ECHO, PI_INPUT);
 
 	// Init Sensors here
 	init_sensor_driver(MAX_NUM_OF_SENSORS);
@@ -108,8 +108,8 @@ int main(int argc, char *argv[]) {
     currentSensor = new_echo_sensor(GPIO_FRONT_ECHO_SENSOR_ECHO, GPIO_FRONT_ECHO_SENSOR_TRIG);
     front_echo_sensor = &(currentSensor->data);
 	// Back Echo Sensor
-    currentSensor = new_echo_sensor(GPIO_BACK_ECHO_SENSOR_ECHO, GPIO_BACK_ECHO_SENSOR_TRIG);
-    back_echo_sensor = &(currentSensor->data);
+    //currentSensor = new_echo_sensor(GPIO_BACK_ECHO_SENSOR_ECHO, GPIO_BACK_ECHO_SENSOR_TRIG);
+    //back_echo_sensor = &(currentSensor->data);
     
     
     // Start sensors
