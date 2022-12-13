@@ -11,15 +11,15 @@
 #define RUN_ON 1
 
 // Line sensor
-// ON_LINE is 0 because the road is dark color.
+// ON_LINE is 1 because the road is dark color.
 // Dark object tend to absorb light.
 // This means that if we are not recieving a signal,
 // then that means we are on track.
 // TLDR:
-// 0 for dark object
-// 1 for reflective object
-#define ON_LINE 0
-#define OFF_LINE 1
+// 1 for dark object
+// 0 for reflective object
+#define ON_LINE 1
+#define OFF_LINE 0
 
 // Motor
 #define FORWARD 1

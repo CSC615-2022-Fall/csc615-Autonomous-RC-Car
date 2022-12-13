@@ -31,9 +31,11 @@
 #define GPIO_LEFT_LINE_SENSOR 20       // Reflective sensor left
 #define GPIO_RIGHT_LINE_SENSOR 21      // Reflective sensor right
 #define GPIO_FRONT_ECHO_SENSOR_TRIG 19 // Front Echo Sensor Trigger
-#define GPIO_FRONT_ECHO_SENSOR_ECHO 13 // Front Echo Sensor Trigger
-#define GPIO_BACK_ECHO_SENSOR_TRIG 17  // Front Echo Sensor Trigger
-#define GPIO_BACK_ECHO_SENSOR_ECHO 27  // Front Echo Sensor Trigger
+#define GPIO_FRONT_ECHO_SENSOR_ECHO 13 // Front Echo Sensor Echo
+#define GPIO_LEFT_ECHO_SENSOR_TRIG 17  // Left Echo Sensor Trigger
+#define GPIO_LEFT_ECHO_SENSOR_ECHO 27  // Left Echo Sensor Echo
+#define GPIO_RIGHT_ECHO_SENSOR_TRIG 23 // Right Echo Sensor Trigger
+#define GPIO_RIGHT_ECHO_SENSOR_ECHO 24 // Right Echo Sensor Echo
 
 // SensorDriver Config
 #define MAX_NUM_OF_SENSORS 10
@@ -52,16 +54,18 @@ int main(int argc, char *argv[]) {
   int rev_speed = 30;       // Reverse speed
   int turn_speed = 50;      // 90 Turning speed
   double turn_duration = 2; // 90 Turning duration
-  if (argc == 5) {
+  int use_left = 1;         // 0 = steer right around obstruction, 1 = steer left
+  if (argc == 6) {
     speed = atoi(argv[1]);
     rev_speed = atoi(argv[2]);
     turn_speed = atoi(argv[3]);
     turn_duration = atof(argv[4]);
+    use_left = atof(argv[5]);
   }
 
   printf("Using arguments:\nSpeed: %d\nReverse Speed: %d\n90 Turn Speed: "
-         "%d\n90 Turn Duration: %f\n",
-         speed, rev_speed, turn_speed, turn_duration);
+         "%d\n90 Turn Duration: %f\nUsing left sensor: %d",
+         speed, rev_speed, turn_speed, turn_duration, use_left);
 
   // Data to use
   int *left_line_sensor;
@@ -90,8 +94,13 @@ int main(int argc, char *argv[]) {
   gpioSetMode(GPIO_RIGHT_LINE_SENSOR, PI_INPUT);
   gpioSetMode(GPIO_FRONT_ECHO_SENSOR_TRIG, PI_OUTPUT);
   gpioSetMode(GPIO_FRONT_ECHO_SENSOR_ECHO, PI_INPUT);
-  gpioSetMode(GPIO_BACK_ECHO_SENSOR_TRIG, PI_OUTPUT);
-  gpioSetMode(GPIO_BACK_ECHO_SENSOR_ECHO, PI_INPUT);
+  if (use_left == 1) {
+    gpioSetMode(GPIO_LEFT_ECHO_SENSOR_TRIG, PI_OUTPUT);
+    gpioSetMode(GPIO_LEFT_ECHO_SENSOR_ECHO, PI_INPUT);
+  } else {
+    gpioSetMode(GPIO_RIGHT_ECHO_SENSOR_TRIG, PI_OUTPUT);
+    gpioSetMode(GPIO_RIGHT_ECHO_SENSOR_ECHO, PI_INPUT);
+  }
 
   // Init Sensors here
   init_sensor_driver(MAX_NUM_OF_SENSORS);
@@ -104,12 +113,15 @@ int main(int argc, char *argv[]) {
   Sensor *currentSensor2 = new_line_sensor(GPIO_RIGHT_LINE_SENSOR);
   right_line_sensor = &(currentSensor2->data);
   // Front Echo Sensor
-  Sensor *currentSensor3 =
-      new_echo_sensor(GPIO_FRONT_ECHO_SENSOR_ECHO, GPIO_FRONT_ECHO_SENSOR_TRIG);
+  Sensor *currentSensor3 = new_echo_sensor(GPIO_FRONT_ECHO_SENSOR_ECHO, GPIO_FRONT_ECHO_SENSOR_TRIG);
   front_echo_sensor = &(currentSensor3->data);
   // Back Echo Sensor
-  Sensor *currentSensor4 =
-      new_echo_sensor(GPIO_BACK_ECHO_SENSOR_ECHO, GPIO_BACK_ECHO_SENSOR_TRIG);
+  Sensor *currentSensor4;
+  if (use_left == 1) {
+    currentSensor4 = new_echo_sensor(GPIO_LEFT_ECHO_SENSOR_ECHO, GPIO_LEFT_ECHO_SENSOR_TRIG);
+  } else {
+    currentSensor4 = new_echo_sensor(GPIO_RIGHT_ECHO_SENSOR_ECHO, GPIO_RIGHT_ECHO_SENSOR_TRIG);
+  }
   back_echo_sensor = &(currentSensor4->data);
 
   // Start sensors
@@ -121,85 +133,82 @@ int main(int argc, char *argv[]) {
 
   // BUTTON SIGNAL GOES HERE
   printf("Waiting for button press...\n");
-  while (running == RUN_ON && gpioRead(GPIO_START_BUTTON) == 0) {
-  }
+  while (running == RUN_ON && gpioRead(GPIO_START_BUTTON) == 0) {}
   printf("RUNNING\n");
 
   while (running == RUN_ON) {
     // decision handling here
 
-    // Sensor and Motor test
-    // if (*left_line_sensor = ON_LINE) {
-    // 	// Motor_Run(MOTORA, FORWARD, 100);
-    // } else {
-    // 	// Motor_Run(MOTORA, FORWARD, 0);
-    // }
-
-    // if (*left_line_sensor == ON_LINE) {
-    // 	// Motor_Run(MOTORB, FORWARD, 100);
-    // } else {
-    // 	// Motor_Run(MOTORB, FORWARD, 0);
-    // }
-    // printf("front = %d\n", *front_echo_sensor);
-    // printf("back = %d\n", *back_echo_sensor);
-    // time_sleep(0.5);
-    if (*front_echo_sensor < 8) // 10 is just an arbitrary threshold for now
-    {
-      printf("I SEE OBJECT FRONT\n");
+    if (*front_echo_sensor < 8) {
+      printf("I SEE OBJECT FRONT, TURN UNTIL BACK SEES OBJECT\n");
 
       // full stop
       set_all_motors_to_stop();
       time_sleep(0.5);
 
-      // turn right until right until left echo sees object
+      // turn until back echo sees object
       set_motor_speed(RIGHT_MOTOR, turn_speed);
       set_motor_speed(LEFT_MOTOR, turn_speed);
-      set_motor_direction_backward(RIGHT_MOTOR);
-      set_motor_direction_forward(LEFT_MOTOR);
+      if (use_left) {
+        // turn right until left echo sees object
+        set_motor_direction_backward(RIGHT_MOTOR);
+        set_motor_direction_forward(LEFT_MOTOR);
+      } else {
+        // turn left until right echo sees object
+        set_motor_direction_forward(RIGHT_MOTOR);
+        set_motor_direction_backward(LEFT_MOTOR);
+      }
       while (*back_echo_sensor >= 30)
         usleep(100);
-      printf("I SEE OBJECT BACK\n");
+      printf("BACK SEES OBJECT, STOP TURNING, MOVE FORWARDS UNTIL BACK DOESNT SEE OBJECT\n");
 
       set_all_motors_to_stop();
       time_sleep(0.5);
 
-      // repeat move forwards until left echo sensor does not see object
-      set_motor_speed(RIGHT_MOTOR, 50);
-      set_motor_speed(LEFT_MOTOR, 50);
+      // repeat move forwards until back echo does not see object
+      set_motor_speed(RIGHT_MOTOR, turn_speed);
+      set_motor_speed(LEFT_MOTOR, turn_speed);
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_direction_forward(LEFT_MOTOR);
       while (*back_echo_sensor < 30)
         usleep(100);
-      printf("I DONT SEE OBJECT BACK\n");
+      printf("BACK DOESNT SEE OBJECT, STOP MOVING, TURN 90, MOVE FORWARDS UNTIL BACK SEES OBJECT\n");
 
       set_all_motors_to_stop();
       time_sleep(0.5);
 
-      // 90 degree turn left
+      // 90 degree turn
       set_motor_speed(RIGHT_MOTOR, turn_speed);
       set_motor_speed(LEFT_MOTOR, turn_speed);
-      set_motor_direction_forward(RIGHT_MOTOR);
-      set_motor_direction_backward(LEFT_MOTOR);
+      if (use_left) {
+        // turn left
+        set_motor_direction_forward(RIGHT_MOTOR);
+        set_motor_direction_backward(LEFT_MOTOR);
+      } else {
+        // turn right
+        set_motor_direction_backward(RIGHT_MOTOR);
+        set_motor_direction_forward(LEFT_MOTOR);
+      }
       time_sleep(turn_duration);
 
       set_all_motors_to_stop();
       time_sleep(0.5);
 
-      // repeat move forwards until left echo sensor sees object
-      set_motor_speed(RIGHT_MOTOR, 50);
-      set_motor_speed(LEFT_MOTOR, 50);
+      // repeat move forwards until back echo sensor sees object
+      set_motor_speed(RIGHT_MOTOR, turn_speed);
+      set_motor_speed(LEFT_MOTOR, turn_speed);
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_direction_forward(LEFT_MOTOR);
       while (*back_echo_sensor >= 30)
         usleep(100);
-      printf("I SEE OBJECT BACK\n");
+      printf("BACK SEES OBJECT, STOP MOVING, MOVE FORWARDS SLIGHTLY, MOVE FORWARDS UNTIL BACK SEES OBJECT\n");
 
       set_all_motors_to_stop();
       time_sleep(0.5);
 
       // move forwards slightly
-      set_motor_speed(RIGHT_MOTOR, 50);
-      set_motor_speed(LEFT_MOTOR, 50);
+      set_motor_speed(RIGHT_MOTOR, turn_speed);
+      set_motor_speed(LEFT_MOTOR, turn_speed);
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_direction_forward(LEFT_MOTOR);
       time_sleep(0.05);
@@ -208,13 +217,13 @@ int main(int argc, char *argv[]) {
       time_sleep(0.5);
 
       // repeat move forwards until left echo sensor does not see object
-      set_motor_speed(RIGHT_MOTOR, 50);
-      set_motor_speed(LEFT_MOTOR, 50);
+      set_motor_speed(RIGHT_MOTOR, turn_speed);
+      set_motor_speed(LEFT_MOTOR, turn_speed);
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_direction_forward(LEFT_MOTOR);
       while (*back_echo_sensor < 30)
         usleep(100);
-      printf("I DONT SEE OBJECT BACK\n");
+      printf("BACK SEES OBJECT, STOP MOVING, 90 TURN, MOVE FORWARDS UNTIL FRONT SEES BLACK\n");
 
       set_all_motors_to_stop();
       time_sleep(0.5);
@@ -229,43 +238,68 @@ int main(int argc, char *argv[]) {
       set_all_motors_to_stop();
       time_sleep(0.5);
 
-      // repeat move forwards until right reflective sensor see black
-      set_motor_speed(RIGHT_MOTOR, 50);
-      set_motor_speed(LEFT_MOTOR, 50);
+      // repeat move forwards until RIGHT/LEFT reflective sensor see black
+      set_motor_speed(RIGHT_MOTOR, turn_speed);
+      set_motor_speed(LEFT_MOTOR, turn_speed);
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_direction_forward(LEFT_MOTOR);
-      while (*right_line_sensor == ON_LINE)
-        usleep(100);
-      printf("I SEE BLACK RIGHT\n");
+      if (use_left) {
+        while (*right_line_sensor == OFF_LINE)
+          usleep(100);
+      } else {
+        while (*left_line_sensor == OFF_LINE)
+          usleep(100);
+      }
+      printf("LINE SEES BLACK FRONT, MOVE SIDE UNTIL OTHER LINE SEES BLACK\n");
 
       set_all_motors_to_stop();
       time_sleep(0.5);
 
-      // repeat move left forwards until left sensor sees black
-      set_motor_speed(RIGHT_MOTOR, 0);
-      set_motor_speed(LEFT_MOTOR, 50);
+      // stop RIGHT/LEFT, repeat move LEFT/RIGHT forwards until LEFT/RIGHT sensor sees black
+      if (use_left) {
+        set_motor_speed(RIGHT_MOTOR, 0);
+        set_motor_speed(LEFT_MOTOR, turn_speed);
+      } else {
+        set_motor_speed(RIGHT_MOTOR, turn_speed);
+        set_motor_speed(LEFT_MOTOR, 0);
+      }
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_direction_forward(LEFT_MOTOR);
-      while (*left_line_sensor == ON_LINE)
-        usleep(100);
-      printf("I SEE BLACK LEFT\n");
+      if (use_left) {
+        while (*left_line_sensor == OFF_LINE)
+          usleep(100);
+      } else {
+        while (*right_line_sensor == OFF_LINE)
+          usleep(100);
+      }
+      printf("OTHER LINE SEES BLACK FRONT, MOVE SIDE UNTIL LINE SEES WHITE\n");
 
       set_all_motors_to_stop();
       time_sleep(0.5);
 
-      // repeat move left forwards until right sensor sees white
-      set_motor_speed(RIGHT_MOTOR, 0);
-      set_motor_speed(LEFT_MOTOR, 50);
+      // stop RIGHT/LEFT repeat move forwards until RIGHT/LEFT sensor sees white
+      if (use_left) {
+        set_motor_speed(RIGHT_MOTOR, 0);
+        set_motor_speed(LEFT_MOTOR, 50);
+      } else {
+        set_motor_speed(RIGHT_MOTOR, 50);
+        set_motor_speed(LEFT_MOTOR, 0);
+      }
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_direction_forward(LEFT_MOTOR);
-      while (*right_line_sensor == OFF_LINE)
-        usleep(100);
-      printf("I SEE WHITE RIGHT\n");
+      if (use_left) {
+        while (*right_line_sensor == ON_LINE)
+          usleep(100);
+      } else {
+        while (*left_line_sensor == ON_LINE)
+          usleep(100);
+      }
+      printf("LINE SEES WHITE, WE ARE BACK ON THE LINE\n");
 
       continue;
     }
 
-    if (*left_line_sensor == ON_LINE) {
+    if (*left_line_sensor == OFF_LINE) {
       set_motor_direction_forward(LEFT_MOTOR);
       set_motor_speed(LEFT_MOTOR, speed);
     } else {
@@ -273,7 +307,7 @@ int main(int argc, char *argv[]) {
       set_motor_speed(LEFT_MOTOR, rev_speed);
     }
 
-    if (*right_line_sensor == ON_LINE) {
+    if (*right_line_sensor == OFF_LINE) {
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_speed(RIGHT_MOTOR, speed);
     } else {
