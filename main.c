@@ -181,7 +181,7 @@ int main(int argc, char *argv[]) {
 			// repeat move forwards until right reflective sensor see black
 			set_motor_direction_forward(LEFT_MOTOR);
 			printf("%d %d\n", *right_line_sensor, OFF_LINE);
-			while(*right_line_sensor == OFF_LINE) usleep(100);
+			while(*right_line_sensor == ON_LINE) usleep(100);
 
 			running = 0;
 			break;
