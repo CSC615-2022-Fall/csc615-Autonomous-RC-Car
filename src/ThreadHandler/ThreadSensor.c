@@ -65,6 +65,8 @@ void* thread_collect_line_sensor_data(void* threadArgs)
     {
         sensor->data = gpioRead(pin);
 
+        printf("HELLO?\n");
+
         time_sleep(0.02);
     }
     pthread_exit(NULL);
