@@ -156,6 +156,9 @@ int main(int argc, char *argv[]) {
 
 			time_sleep(turn_duration);
 
+			running = 0;
+			break;
+
 			set_motor_direction_forward(RIGHT_MOTOR);
 
 			/*first turn*/
