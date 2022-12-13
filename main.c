@@ -145,6 +145,8 @@ int main(int argc, char *argv[]) {
         // printf("right_line_sensor = %d\n", *right_line_sensor);
         if (*front_echo_sensor < 30) // 10 is just an arbitrary threshold for now
         {
+			printf("AAAAA\n");
+
             set_all_motors_to_stop();
 			set_motor_direction_backward(RIGHT_MOTOR);
 			set_motor_speed(RIGHT_MOTOR, 65);
