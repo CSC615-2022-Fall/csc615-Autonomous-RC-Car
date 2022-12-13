@@ -183,16 +183,16 @@ int main(int argc, char *argv[]) {
 			printf("%d %d\n", *right_line_sensor, OFF_LINE);
 			while(*right_line_sensor == ON_LINE) usleep(100);
 
+			// stop left
+			set_motor_speed(LEFT_MOTOR, 0);
+
+			// repeat move left forwards until left sensor sees black
+			while(*left_line_sensor == ON_LINE) {}
+
 			running = 0;
 			break;
 
-			set_all_motors_to_stop();
-			set_motor_direction_forward(LEFT_MOTOR);
-			set_motor_speed(LEFT_MOTOR, turn_speed);
-
-			while(*left_line_sensor == OFF_LINE) {
-							
-			}
+			// repeat move right forwards at 20% until right sensor sees white
 
 			set_motor_direction_forward(RIGHT_MOTOR);
 			set_motor_speed(RIGHT_MOTOR, turn_speed);
