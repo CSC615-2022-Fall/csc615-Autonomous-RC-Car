@@ -152,17 +152,18 @@ int main(int argc, char *argv[]) {
             set_all_motors_to_stop();
 			time_sleep(0.5);
 
-			// 90 degree turn right
+			// turn right until right until left echo sees object
 			set_motor_speed(RIGHT_MOTOR, turn_speed);
 			set_motor_speed(LEFT_MOTOR, turn_speed);
 			set_motor_direction_backward(RIGHT_MOTOR);
 			set_motor_direction_forward(LEFT_MOTOR);
-			time_sleep(turn_duration);
+			while(*back_echo_sensor >= 30) usleep(100);
+			printf("I SEE OBJECT BACK\n");
 
 			set_all_motors_to_stop();
 			time_sleep(0.5);
 
-			// repeat move forwards until right echo sensor does not see object
+			// repeat move forwards until left echo sensor does not see object
 			set_motor_speed(RIGHT_MOTOR, 50);
 			set_motor_speed(LEFT_MOTOR, 50);
 			set_motor_direction_forward(RIGHT_MOTOR);
@@ -183,7 +184,7 @@ int main(int argc, char *argv[]) {
 			set_all_motors_to_stop();
 			time_sleep(0.5);
 
-			// repeat move forwards until right echo sensor sees object
+			// repeat move forwards until left echo sensor sees object
 			set_motor_speed(RIGHT_MOTOR, 50);
 			set_motor_speed(LEFT_MOTOR, 50);
 			set_motor_direction_forward(RIGHT_MOTOR);
@@ -204,7 +205,7 @@ int main(int argc, char *argv[]) {
 			set_all_motors_to_stop();
 			time_sleep(0.5);
 
-			// repeat move forwards until right echo sensor does not see object
+			// repeat move forwards until left echo sensor does not see object
 			set_motor_speed(RIGHT_MOTOR, 50);
 			set_motor_speed(LEFT_MOTOR, 50);
 			set_motor_direction_forward(RIGHT_MOTOR);
