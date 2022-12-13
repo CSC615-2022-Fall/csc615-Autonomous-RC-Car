@@ -194,6 +194,16 @@ int main(int argc, char *argv[]) {
 			set_all_motors_to_stop();
 			time_sleep(0.5);
 
+			// move forwards slightly
+			set_motor_speed(RIGHT_MOTOR, 40);
+			set_motor_speed(LEFT_MOTOR, 40);
+			set_motor_direction_forward(RIGHT_MOTOR);
+			set_motor_direction_forward(LEFT_MOTOR);
+			time_sleep(0.05);
+
+			set_all_motors_to_stop();
+			time_sleep(0.5);
+
 			// repeat move forwards until right echo sensor does not see object
 			while(*back_echo_sensor < 30) usleep(100);
 			printf("I DONT SEE OBJECT BACK\n");
