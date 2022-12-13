@@ -60,7 +60,7 @@ $(OUTPUT): $(OBJ) $(DEPS_PATH)
 
 turncal: deps TurnCalibrate
 
-TurnCalibrate: $(OBJ) $(DEPS_PATH)
+TurnCalibrate: $(patsubst %,$(DIR_O)/%.o,TurnCalibrate) $(DEPS_PATH)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 clean:
