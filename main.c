@@ -158,6 +158,8 @@ int main(int argc, char *argv[]) {
 
 			set_motor_direction_forward(RIGHT_MOTOR);
 
+			printf("%d\n", *back_echo_sensor);
+
 			/*first turn*/
 			while(*back_echo_sensor < 30) {
 						
