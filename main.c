@@ -148,45 +148,45 @@ int main(int argc, char *argv[]) {
         {
 			printf("AAAAA\n");
 
-            set_all_motors_to_stop();
-			set_motor_direction_backward(RIGHT_MOTOR);
-			set_motor_speed(RIGHT_MOTOR, 65);
-			set_motor_speed(LEFT_MOTOR, 65);
-
-			time_sleep(2);
-
-			set_motor_direction_forward(RIGHT_MOTOR);
-
-			/*first turn*/
-			while(*back_echo_sensor < 30) {
-						
-			}
-			set_motor_direction_backward(LEFT_MOTOR);
-			time_sleep(2);
-			set_motor_direction_forward(LEFT_MOTOR);
-
-			/*second turn*/
-			while(*back_echo_sensor > 30) {
-
-			}
-			set_motor_direction_backward(LEFT_MOTOR);
-			time_sleep(2);
-			set_motor_direction_forward(LEFT_MOTOR);
-
-			while(*right_line_sensor != ON_LINE) {
-							
-			}
-
-			set_all_motors_to_stop();
-			set_motor_direction_forward(LEFT_MOTOR);
-			set_motor_speed(LEFT_MOTOR, 65);
-
-			while(*left_line_sensor == OFF_LINE) {
-							
-			}
-
-			set_motor_direction_forward(RIGHT_MOTOR);
-			set_motor_speed(RIGHT_MOTOR, 65);
+            //set_all_motors_to_stop();
+			//set_motor_direction_backward(RIGHT_MOTOR);
+			//set_motor_speed(RIGHT_MOTOR, 65);
+			//set_motor_speed(LEFT_MOTOR, 65);
+//
+			//time_sleep(2);
+//
+			//set_motor_direction_forward(RIGHT_MOTOR);
+//
+			///*first turn*/
+			//while(*back_echo_sensor < 30) {
+			//			
+			//}
+			//set_motor_direction_backward(LEFT_MOTOR);
+			//time_sleep(2);
+			//set_motor_direction_forward(LEFT_MOTOR);
+//
+			///*second turn*/
+			//while(*back_echo_sensor > 30) {
+//
+			//}
+			//set_motor_direction_backward(LEFT_MOTOR);
+			//time_sleep(2);
+			//set_motor_direction_forward(LEFT_MOTOR);
+//
+			//while(*right_line_sensor != ON_LINE) {
+			//				
+			//}
+//
+			//set_all_motors_to_stop();
+			//set_motor_direction_forward(LEFT_MOTOR);
+			//set_motor_speed(LEFT_MOTOR, 65);
+//
+			//while(*left_line_sensor == OFF_LINE) {
+			//				
+			//}
+//
+			//set_motor_direction_forward(RIGHT_MOTOR);
+			//set_motor_speed(RIGHT_MOTOR, 65);
 
 			continue;
         }
