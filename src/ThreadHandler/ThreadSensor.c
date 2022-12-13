@@ -67,7 +67,7 @@ void* thread_collect_line_sensor_data(void* threadArgs)
     {
         sensor->data = gpioRead(pin);
 
-        printf("b%d\n", *pin);
+        printf("b%d\n", pin);
 
         usleep(100);
     }
