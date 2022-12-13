@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
 
   // I2C, PWM, MOTOR HAT Init
   // init_motor_driver(I2C_HAT_ADDRESS, 100, 2);
-  init_motor_driver(0x40, 100, 2); // Not sure if this fixes some bug
+  init_motor_driver(0x40, 1000, 2); // Not sure if this fixes some bug
   // Add Motors
   add_motor_to_driver(100, PWMA, AIN1, AIN2);
   add_motor_to_driver(100, PWMB, BIN2, BIN1);
