@@ -46,7 +46,7 @@ void* thread_collect_echo_sensor_data(void* threadArgs)
         // load distance into int* input
         sensor->data = (int)distance;
         
-        time_sleep(0.05);
+        time_sleep(0.02);
     }
     pthread_exit(NULL);
 }
@@ -65,7 +65,7 @@ void* thread_collect_line_sensor_data(void* threadArgs)
     {
         sensor->data = gpioRead(pin);
 
-        time_sleep(0.05);
+        time_sleep(0.02);
     }
     pthread_exit(NULL);
 }
