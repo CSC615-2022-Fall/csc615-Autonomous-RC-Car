@@ -58,6 +58,11 @@ $(DIR_O)/%.o: %.c
 $(OUTPUT): $(OBJ) $(DEPS_PATH)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
+turncal: deps TurnCalibrate
+
+TurnCalibrate: $(OBJ) $(DEPS_PATH)
+	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+
 clean:
 	rm -f $(DIR_O)/*.o $(OUTPUT)
 
