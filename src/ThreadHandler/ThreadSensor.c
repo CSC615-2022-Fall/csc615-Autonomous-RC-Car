@@ -46,7 +46,7 @@ void *thread_collect_echo_sensor_data(void *threadArgs) {
     // load distance into int* input
     sensor->data = (int)distance;
 
-    usleep(100);
+    usleep(500);
   }
   pthread_exit(NULL);
 }
