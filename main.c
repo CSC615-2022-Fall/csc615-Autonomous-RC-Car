@@ -174,17 +174,16 @@ int main(int argc, char *argv[]) {
 			// repeat move forwards until right echo sensor does not see object
 			while(*back_echo_sensor < 30) {}
 
-			running = 0;
-			break;
-
+			// 90 degree turn left
 			set_motor_direction_backward(LEFT_MOTOR);
 			time_sleep(turn_duration);
 
+			// repeat move forwards until right reflective sensor see black
 			set_motor_direction_forward(LEFT_MOTOR);
+			while(*right_line_sensor != ON_LINE) {}
 
-			while(*right_line_sensor != ON_LINE) {
-							
-			}
+			running = 0;
+			break;
 
 			set_all_motors_to_stop();
 			set_motor_direction_forward(LEFT_MOTOR);
