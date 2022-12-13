@@ -65,7 +65,6 @@ int main(int argc, char *argv[]) {
     
 	// Cleanup
 	set_all_motors_to_stop();
-	terminate_sensor_driver();
 	terminate_motor_driver();
 	gpioTerminate();
 
