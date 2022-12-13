@@ -187,7 +187,7 @@ int main(int argc, char *argv[]) {
 			set_motor_speed(LEFT_MOTOR, 0);
 
 			// repeat move left forwards until left sensor sees black
-			while(*left_line_sensor == ON_LINE) {}
+			while(*left_line_sensor == OFF_LINE) {}
 
 			running = 0;
 			break;
