@@ -163,12 +163,12 @@ int main(int argc, char *argv[]) {
 						
 			}
 
-			running = 0;
-			break;
-
 			set_motor_direction_backward(LEFT_MOTOR);
 			time_sleep(turn_duration);
 			set_motor_direction_forward(LEFT_MOTOR);
+
+			running = 0;
+			break;
 
 			/*second turn*/
 			while(*back_echo_sensor > 30) {
