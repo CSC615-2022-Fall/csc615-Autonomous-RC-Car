@@ -195,16 +195,14 @@ int main(int argc, char *argv[]) {
 
 			// repeat move left forwards until left sensor sees black
 			usleep(100);
-			while(*left_line_sensor == OFF_LINE) usleep(100);
+			while(*left_line_sensor == ON_LINE) usleep(100);
 			printf("I SEE BLACK LEFT\n");
 
-			running = 0;
-			break;
-
-			// repeat move right forwards at 20% until right sensor sees white
-
-			set_motor_direction_forward(RIGHT_MOTOR);
+			// repeat move left forwards until right sensor sees white
 			set_motor_speed(RIGHT_MOTOR, turn_speed);
+			usleep(100);
+			while(*left_line_sensor == OFF_LINE) usleep(100);
+			printf("I SEE WHITE RIGHT\n");
 
 			continue;
         }
