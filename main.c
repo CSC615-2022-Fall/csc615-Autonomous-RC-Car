@@ -150,32 +150,31 @@ int main(int argc, char *argv[]) {
 
             set_all_motors_to_stop();
 			time_sleep(1);
-			set_motor_direction_backward(RIGHT_MOTOR);
 			set_motor_speed(RIGHT_MOTOR, turn_speed);
 			set_motor_speed(LEFT_MOTOR, turn_speed);
 
+			set_motor_direction_backward(RIGHT_MOTOR);
 			time_sleep(turn_duration);
 
 			set_motor_direction_forward(RIGHT_MOTOR);
 
 			/*first turn*/
-			while(*back_echo_sensor < 30) {
-						
-			}
+			while(*back_echo_sensor < 30) {}
 
 			set_motor_direction_backward(LEFT_MOTOR);
 			time_sleep(turn_duration);
+
 			set_motor_direction_forward(LEFT_MOTOR);
+
+			/*second turn*/
+			while(*back_echo_sensor > 30) {}
 
 			running = 0;
 			break;
 
-			/*second turn*/
-			while(*back_echo_sensor > 30) {
-
-			}
 			set_motor_direction_backward(LEFT_MOTOR);
 			time_sleep(turn_duration);
+
 			set_motor_direction_forward(LEFT_MOTOR);
 
 			while(*right_line_sensor != ON_LINE) {
