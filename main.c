@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
   }
 
   printf("Using arguments:\nSpeed: %d\nReverse Speed: %d\n90 Turn Speed: "
-         "%d\n90 Turn Duration: %f\nUsing left sensor: %d",
+         "%d\n90 Turn Duration: %f\nUsing left sensor: %d\n",
          speed, rev_speed, turn_speed, turn_duration, use_left);
 
   // Data to use
@@ -224,6 +224,16 @@ int main(int argc, char *argv[]) {
       while (*back_echo_sensor < 20)
         usleep(100);
       printf("BACK SEES OBJECT, STOP MOVING, 90 TURN, MOVE FORWARDS UNTIL FRONT SEES BLACK\n");
+
+      set_all_motors_to_stop();
+      time_sleep(0.5);
+
+      // move forwards slightly
+      set_motor_speed(RIGHT_MOTOR, turn_speed);
+      set_motor_speed(LEFT_MOTOR, turn_speed);
+      set_motor_direction_forward(RIGHT_MOTOR);
+      set_motor_direction_forward(LEFT_MOTOR);
+      time_sleep(0.1);
 
       set_all_motors_to_stop();
       time_sleep(0.5);
