@@ -46,6 +46,7 @@
 #define LEFT_MOTOR 0
 #define RIGHT_MOTOR 1
 
+// Flag to tell the main while loop to run and is used by the sigint function to turn off
 int running;
 
 // sigint handler for cntl-c
