@@ -8,7 +8,9 @@
  *
  * File: main.c
  *
- * Description:
+ * Description: main function to run the robot. Follows a black 
+ * line on a white canvas, and avoids obstructions by steering 
+ * around it, and returning to the line
  *
  **************************************************************/
 
@@ -52,8 +54,8 @@ int main(int argc, char *argv[]) {
   // CMD Line Arguments
   int speed = 65;           // Normal speed
   int rev_speed = 30;       // Reverse speed
-  int turn_speed = 50;      // 90 Turning speed
-  double turn_duration = 2; // 90 Turning duration
+  int turn_speed = 50;      // 90 degree turning speed
+  double turn_duration = 2; // 90 degree turning duration
   int use_left = 1;         // 1 = using left sensor steer right around obstruction, 0 = using right steer left
   if (argc == 6) {
     speed = atoi(argv[1]);
@@ -68,6 +70,7 @@ int main(int argc, char *argv[]) {
          speed, rev_speed, turn_speed, turn_duration, use_left);
 
   // Data to use
+  // int pointers for sensor threads to store input
   int *left_line_sensor;
   int *right_line_sensor;
   int *front_echo_sensor;
@@ -90,14 +93,17 @@ int main(int argc, char *argv[]) {
   set_motor_direction_forward(RIGHT_MOTOR);
   set_all_motors_to_stop();
 
+  // setting gpio modes (input/output)
   gpioSetMode(GPIO_LEFT_LINE_SENSOR, PI_INPUT);
   gpioSetMode(GPIO_RIGHT_LINE_SENSOR, PI_INPUT);
   gpioSetMode(GPIO_FRONT_ECHO_SENSOR_TRIG, PI_OUTPUT);
   gpioSetMode(GPIO_FRONT_ECHO_SENSOR_ECHO, PI_INPUT);
   if (use_left == 1) {
+    // moving on right side of obstruction using left sensor
     gpioSetMode(GPIO_LEFT_ECHO_SENSOR_TRIG, PI_OUTPUT);
     gpioSetMode(GPIO_LEFT_ECHO_SENSOR_ECHO, PI_INPUT);
   } else {
+    // moving on left side of obstruction using right sensor
     gpioSetMode(GPIO_RIGHT_ECHO_SENSOR_TRIG, PI_OUTPUT);
     gpioSetMode(GPIO_RIGHT_ECHO_SENSOR_ECHO, PI_INPUT);
   }
@@ -117,6 +123,7 @@ int main(int argc, char *argv[]) {
   front_echo_sensor = &(currentSensor3->data);
   // Back Echo Sensor
   Sensor *currentSensor4;
+  // Only need to use 1 sensor for avoiding obstructions, not both
   if (use_left == 1) {
     currentSensor4 = new_echo_sensor(GPIO_LEFT_ECHO_SENSOR_ECHO, GPIO_LEFT_ECHO_SENSOR_TRIG);
   } else {
@@ -139,8 +146,12 @@ int main(int argc, char *argv[]) {
   while (running == RUN_ON) {
     // decision handling here
 
+    // OBSTRUCTION DETECTED
     if (*front_echo_sensor < 10) {
       printf("I SEE OBJECT FRONT, TURN UNTIL BACK SEES OBJECT\n");
+
+      // BOT IS CURRENTLY IN FRONT OF OBJECT
+      // TURN AWAY TO THE SIDE
 
       // full stop
       set_all_motors_to_stop();
@@ -165,6 +176,9 @@ int main(int argc, char *argv[]) {
       set_all_motors_to_stop();
       time_sleep(0.2);
 
+      // BOT NOW FACING AWAY FROM OBSTRUCTION
+      // MOVE FORWARDS UNTIL CLEARED OBSTRUCTION
+
       // repeat move forwards until back echo does not see object
       set_motor_speed(RIGHT_MOTOR, turn_speed);
       set_motor_speed(LEFT_MOTOR, turn_speed);
@@ -176,6 +190,9 @@ int main(int argc, char *argv[]) {
 
       set_all_motors_to_stop();
       time_sleep(0.2);
+
+      // BOT CLEARED OBSTRUCTION
+      // TURN TO MOVE FORWARDS
 
       // 90 degree turn
       set_motor_speed(RIGHT_MOTOR, turn_speed);
@@ -193,6 +210,8 @@ int main(int argc, char *argv[]) {
 
       set_all_motors_to_stop();
       time_sleep(0.2);
+
+      // MOVE PAST OBSTRUCTION
 
       // repeat move forwards until back echo sensor sees object
       set_motor_speed(RIGHT_MOTOR, turn_speed);
@@ -238,6 +257,9 @@ int main(int argc, char *argv[]) {
       set_all_motors_to_stop();
       time_sleep(0.2);
 
+      // BOT CLEARED OBSTRUCTION
+      // TURN TOWARDS LINE
+
       // 90 degree turn
       set_motor_speed(RIGHT_MOTOR, turn_speed);
       set_motor_speed(LEFT_MOTOR, turn_speed);
@@ -254,6 +276,8 @@ int main(int argc, char *argv[]) {
 
       set_all_motors_to_stop();
       time_sleep(0.2);
+
+      // MOVE FORWARDS AND REALIGN WITH LINE
 
       // repeat move forwards until RIGHT/LEFT reflective sensor see black
       set_motor_speed(RIGHT_MOTOR, turn_speed);
@@ -313,21 +337,29 @@ int main(int argc, char *argv[]) {
       }
       printf("LINE SEES WHITE, WE ARE BACK ON THE LINE\n");
 
+      // BOT BACK ON LINE
+
       continue;
     }
 
+    // FOLLOW LINE STEERING
+
     if (*left_line_sensor == OFF_LINE) {
+      // continue moving forwards
       set_motor_direction_forward(LEFT_MOTOR);
       set_motor_speed(LEFT_MOTOR, speed);
     } else {
+      // reverse this side to steer towards line
       set_motor_direction_backward(LEFT_MOTOR);
       set_motor_speed(LEFT_MOTOR, rev_speed);
     }
 
     if (*right_line_sensor == OFF_LINE) {
+      // continue moving forwards
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_speed(RIGHT_MOTOR, speed);
     } else {
+      // reverse this side to steer towards line
       set_motor_direction_backward(RIGHT_MOTOR);
       set_motor_speed(RIGHT_MOTOR, rev_speed);
     }

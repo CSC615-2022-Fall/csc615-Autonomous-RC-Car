@@ -8,7 +8,8 @@
  *
  * File: TurnCalibrate.c
  *
- * Description:
+ * Description: Calibration main function used to quickly test
+ * turning speed and duration values for mainly 90 degree turns
  *
  **************************************************************/
 
@@ -28,9 +29,11 @@
 #define RIGHT_MOTOR 1
 
 int main(int argc, char *argv[]) {
+  // while in theory this can be used to test for any degree of turn, we mainly use this for 90 degree turns
+
   // CMD Line Arguments
-  int turn_speed = 50;      // 90 Turning speed
-  double turn_duration = 2; // 90 Turning duration
+  int turn_speed = 50;      // 90 degree turning speed
+  double turn_duration = 2; // 90 degree turning duration
   if (argc == 3) {
     turn_speed = atoi(argv[1]);
     turn_duration = atof(argv[2]);
@@ -52,17 +55,19 @@ int main(int argc, char *argv[]) {
   add_motor_to_driver(100, PWMA, AIN1, AIN2);
   add_motor_to_driver(100, PWMB, BIN2, BIN1);
 
-  // Sets up the initial direction
+  // Sets up the initial direction for turning
   set_motor_direction_forward(LEFT_MOTOR);
   set_motor_direction_backward(RIGHT_MOTOR);
   set_all_motors_to_stop();
 
+  // set speed
   set_motor_speed(LEFT_MOTOR, turn_speed);
   set_motor_speed(RIGHT_MOTOR, turn_speed);
 
+  // turn for set duration
   time_sleep(turn_duration);
 
-  // Cleanup
+  // stop and cleanup
   set_all_motors_to_stop();
   terminate_motor_driver();
   gpioTerminate();
