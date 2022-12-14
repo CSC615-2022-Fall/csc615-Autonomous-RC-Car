@@ -1,3 +1,18 @@
+/**************************************************************
+ * Class:  CSC-615-01 Fall 2022
+ * Names: Christian Francisco, David Ye Luo, Marc Castro, Rafael Sunico
+ * Student IDs: 920603057, 917051959, 921720147, 920261261
+ * GitHub Name: csc615-term-project-DavidYeLuo
+ * Group Name: Fried Pi
+ * Project: Robot Car
+ *
+ * File: MacroDefinitions.c
+ *
+ * Description: Contains basic information. Can always switch the numbers
+ * around to fit the needs. It is used for easier understanding for users but
+ * also customizable in case the data is the opposite of what we expect.
+ *
+ **************************************************************/
 #ifndef MACRODEFINITIONS_H
 #define MACRODEFINITIONS_H
 
