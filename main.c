@@ -146,7 +146,7 @@ int main(int argc, char *argv[]) {
     // decision handling here
     usleep(500);
 
-    if (*front_ir_sensor == 0) {
+    if (*front_ir_sensor == OFF_LINE) {
       printf("I SEE OBJECT FRONT, TURN UNTIL BACK SEES OBJECT\n");
 
       // full stop
