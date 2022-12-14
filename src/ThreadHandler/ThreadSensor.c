@@ -48,13 +48,13 @@ void *thread_collect_echo_sensor_data(void *threadArgs) {
     // speed of sound in air: 34300 cm/s, divide by 2 for roundtrip
     double distance = (elapsedSec * 34300) / 2;
 
-    if (*echoPin == 13) {
-      printf("%d %d\n",*echoPin,sensor->data);
-    }
-
     // load distance into int* input
     if (distance > 0) {
       sensor->data = (int)distance;
+
+      if (*echoPin == 13) {
+        printf("%d %d\n",*echoPin,sensor->data);
+      }
     }
 
     usleep(100);
