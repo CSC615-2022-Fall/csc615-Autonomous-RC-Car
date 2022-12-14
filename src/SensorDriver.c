@@ -29,11 +29,14 @@ void _add_thread_arg_to_driver(int index);
  * Initialize the state of the driver
  */
 void init_sensor_driver(int max_sensors) {
+  // Checks if max sensor > 0
   if (max_sensors < 1) {
     printf("WARNING: init_sensor_driver has max sensors of 0.\n");
     return;
   }
+  // Allocates memory for private sensor driver
   _sensor_driver = malloc(sizeof(SensorDriver));
+  // Sets the sensor driver to a known state
   _sensor_driver->num_of_sensors = 0;
   _sensor_driver->sensor_list_capacity = max_sensors;
   _sensor_driver->sensors = malloc(sizeof(SensorDriver) * max_sensors);
@@ -48,10 +51,11 @@ void terminate_sensor_driver() {
   _sensor_driver->isRunning = RUN_OFF;
 
   // Deallocate sensors
-  Sensor *current_sensor;
-  pthread_t *current_thread;
-  ThreadArgs *current_thread_arg;
+  Sensor *current_sensor;         // sensor iterator
+  pthread_t *current_thread;      // thread iterator
+  ThreadArgs *current_thread_arg; // thread arg iterator
   for (int i = 0; i < _sensor_driver->num_of_sensors; i++) {
+    // Get iterators
     current_sensor = _sensor_driver->sensors[i];
     current_thread = _sensor_driver->_threads[i];
     current_thread_arg = _sensor_driver->_thread_arguments[i];
@@ -83,18 +87,19 @@ void terminate_sensor_driver() {
 void start_sensors() {
   _sensor_driver->isRunning = RUN_ON;
 
-  Sensor *current_sensor;
-  pthread_t *current_thread;
-  ThreadArgs *current_thread_arg;
+  Sensor *current_sensor;         // sensor iterator
+  pthread_t *current_thread;      // thread iterator
+  ThreadArgs *current_thread_arg; // thread arg iterator
   for (int i = 0; i < _sensor_driver->num_of_sensors; i++) {
+    // Get current iterators
     current_sensor = _sensor_driver->sensors[i];
     current_thread = _sensor_driver->_threads[i];
     current_thread_arg = _sensor_driver->_thread_arguments[i];
 
+    // Create thread based on what type of sensor they are
     if (current_sensor->sensorType == SENSOR_TYPE_ECHO) {
       pthread_create(current_thread, NULL, thread_collect_echo_sensor_data,
                      current_thread_arg);
-
     } else if (current_sensor->sensorType == SENSOR_TYPE_LINE) {
       pthread_create(current_thread, NULL, thread_collect_line_sensor_data,
                      current_thread_arg);
@@ -114,7 +119,9 @@ void start_sensors() {
  * Sensor* contains all the necessary data that the user need
  */
 Sensor *new_line_sensor(int gpio_line) {
+  // Create a Sensor struct
   Sensor *ret = malloc(sizeof(Sensor));
+  // Set Sensor to its type and other info
   ret->gpio_line = gpio_line;
   ret->sensorType = SENSOR_TYPE_LINE;
 
@@ -124,6 +131,8 @@ Sensor *new_line_sensor(int gpio_line) {
     printf("ERROR: num of sensors exceeded the max\n");
     return NULL;
   }
+
+  // After creating the sensor, we updating the driver
   _add_sensor_to_driver(ret, current_index);
   _add_thread_to_driver(current_index);
   _add_thread_arg_to_driver(current_index);
@@ -140,7 +149,9 @@ Sensor *new_line_sensor(int gpio_line) {
  * Sensor* contains all the necessary data that the user need
  */
 Sensor *new_echo_sensor(int gpio_echo, int gpio_trig) {
+  // Create a Sensor struct
   Sensor *ret = malloc(sizeof(Sensor));
+  // Set Sensor to its type and other info
   ret->gpio_echo = gpio_echo;
   ret->gpio_trig = gpio_trig;
   ret->sensorType = SENSOR_TYPE_ECHO;
@@ -151,6 +162,8 @@ Sensor *new_echo_sensor(int gpio_echo, int gpio_trig) {
     printf("ERROR: num of sensors exceeded the max\n");
     return NULL;
   }
+
+  // After creating the sensor, we updating the driver
   _add_sensor_to_driver(ret, current_index);
   _add_thread_to_driver(current_index);
   _add_thread_arg_to_driver(current_index);
