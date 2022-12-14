@@ -34,7 +34,7 @@
 #define GPIO_FRONT_ECHO_SENSOR_ECHO 13 // Front Echo Sensor Echo
 #define GPIO_LEFT_ECHO_SENSOR_TRIG 17  // Left Echo Sensor Trigger
 #define GPIO_LEFT_ECHO_SENSOR_ECHO 27  // Left Echo Sensor Echo
-#define GPIO_RIGHT_ECHO_SENSOR_TRIG 23 // Right Echo Sensor Trigger
+#define GPIO_RIGHT_ECHO_SENSOR_TRIG 30 // Right Echo Sensor Trigger
 #define GPIO_RIGHT_ECHO_SENSOR_ECHO 24 // Right Echo Sensor Echo
 
 // SensorDriver Config
@@ -158,7 +158,7 @@ int main(int argc, char *argv[]) {
         set_motor_direction_forward(RIGHT_MOTOR);
         set_motor_direction_backward(LEFT_MOTOR);
       }
-      while (*back_echo_sensor >= 23)
+      while (*back_echo_sensor >= 30)
         usleep(100);
       printf("BACK SEES OBJECT, STOP TURNING, MOVE FORWARDS UNTIL BACK DOESNT SEE OBJECT\n");
 
@@ -170,7 +170,7 @@ int main(int argc, char *argv[]) {
       set_motor_speed(LEFT_MOTOR, turn_speed);
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_direction_forward(LEFT_MOTOR);
-      while (*back_echo_sensor < 23)
+      while (*back_echo_sensor < 30)
         usleep(100);
       printf("BACK DOESNT SEE OBJECT, STOP MOVING, TURN 90, MOVE FORWARDS UNTIL BACK SEES OBJECT\n");
 
@@ -199,7 +199,7 @@ int main(int argc, char *argv[]) {
       set_motor_speed(LEFT_MOTOR, turn_speed);
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_direction_forward(LEFT_MOTOR);
-      while (*back_echo_sensor >= 23)
+      while (*back_echo_sensor >= 30)
         usleep(100);
       printf("BACK SEES OBJECT, STOP MOVING, MOVE FORWARDS SLIGHTLY, MOVE FORWARDS UNTIL BACK SEES OBJECT\n");
 
@@ -221,7 +221,7 @@ int main(int argc, char *argv[]) {
       set_motor_speed(LEFT_MOTOR, turn_speed);
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_direction_forward(LEFT_MOTOR);
-      while (*back_echo_sensor < 23)
+      while (*back_echo_sensor < 30)
         usleep(100);
       printf("BACK SEES OBJECT, STOP MOVING, 90 TURN, MOVE FORWARDS UNTIL FRONT SEES BLACK\n");
 
