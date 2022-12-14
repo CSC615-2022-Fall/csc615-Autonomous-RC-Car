@@ -28,7 +28,7 @@
 
 // GPIO Pin Numbers
 #define GPIO_START_BUTTON 26
-#define GPIO_LEFT_LINE_SENSOR 23       // Reflective sensor left
+#define GPIO_LEFT_LINE_SENSOR 20       // Reflective sensor left
 #define GPIO_RIGHT_LINE_SENSOR 21      // Reflective sensor right
 #define GPIO_FRONT_ECHO_SENSOR_TRIG 19 // Front Echo Sensor Trigger
 #define GPIO_FRONT_ECHO_SENSOR_ECHO 13 // Front Echo Sensor Echo
