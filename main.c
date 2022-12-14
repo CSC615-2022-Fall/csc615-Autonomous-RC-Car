@@ -228,11 +228,18 @@ int main(int argc, char *argv[]) {
       set_all_motors_to_stop();
       time_sleep(0.5);
 
-      // 90 degree turn left
+      // 90 degree turn
       set_motor_speed(RIGHT_MOTOR, turn_speed);
       set_motor_speed(LEFT_MOTOR, turn_speed);
-      set_motor_direction_forward(RIGHT_MOTOR);
-      set_motor_direction_backward(LEFT_MOTOR);
+      if (use_left) {
+        // turn left
+        set_motor_direction_forward(RIGHT_MOTOR);
+        set_motor_direction_backward(LEFT_MOTOR);
+      } else {
+        // turn right
+        set_motor_direction_backward(RIGHT_MOTOR);
+        set_motor_direction_forward(LEFT_MOTOR);
+      }
       time_sleep(turn_duration);
 
       set_all_motors_to_stop();
