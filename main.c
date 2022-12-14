@@ -34,7 +34,7 @@
 #define GPIO_FRONT_ECHO_SENSOR_ECHO 13 // Front Echo Sensor Echo
 #define GPIO_LEFT_ECHO_SENSOR_TRIG 17  // Left Echo Sensor Trigger
 #define GPIO_LEFT_ECHO_SENSOR_ECHO 27  // Left Echo Sensor Echo
-#define GPIO_RIGHT_ECHO_SENSOR_TRIG 23 // Right Echo Sensor Trigger
+#define GPIO_RIGHT_ECHO_SENSOR_TRIG 30 // Right Echo Sensor Trigger
 #define GPIO_RIGHT_ECHO_SENSOR_ECHO 24 // Right Echo Sensor Echo
 
 // SensorDriver Config
