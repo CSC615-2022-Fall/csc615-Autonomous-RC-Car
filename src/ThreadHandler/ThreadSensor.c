@@ -28,19 +28,19 @@ void *thread_collect_echo_sensor_data(void *threadArgs) {
     for (int i = 0; i < 500000; i++) {
     //while (*isRunning == RUN_ON && gpioRead(*echoPin) == 0) {
       if (*isRunning != RUN_ON || gpioRead(*echoPin) == 1) {
+        clock_gettime(CLOCK_REALTIME, &startTime);
         break;
       }
     }
-    clock_gettime(CLOCK_REALTIME, &startTime);
 
     // keep setting end timer until ECHO doesn't read 1
     for (int i = 0; i < 500000; i++) {
     //while (*isRunning == RUN_ON && gpioRead(*echoPin) == 1) {
       if (*isRunning != RUN_ON || gpioRead(*echoPin) == 0) {
+        clock_gettime(CLOCK_REALTIME, &endTime);
         break;
       }
     }
-    clock_gettime(CLOCK_REALTIME, &endTime);
 
     // calulcate elapsed time
     double startSec = startTime.tv_sec + startTime.tv_nsec / NANO_PER_SEC;
@@ -55,7 +55,7 @@ void *thread_collect_echo_sensor_data(void *threadArgs) {
     sensor->data = (int)distance;
 
     //if (*echoPin == 13) {
-      printf("%d %d\n",*echoPin,sensor->data);
+    //  printf("%d %d\n",*echoPin,sensor->data);
     //}
 
     usleep(100);
