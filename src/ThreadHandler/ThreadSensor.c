@@ -48,9 +48,9 @@ void *thread_collect_echo_sensor_data(void *threadArgs) {
     // load distance into int* input
     sensor->data = (int)distance;
 
-    if (*echoPin == 13) {
-      printf("%d %d\n",*echoPin,sensor->data);
-    }
+    //if (*echoPin == 13) {
+    //  printf("%d %d\n",*echoPin,sensor->data);
+    //}
 
     usleep(100);
   }
