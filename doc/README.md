@@ -16,8 +16,8 @@ Our goal is to create a small robot car using a Raspberry Pi as a central proces
 ### Tasks
 
 #### Plan
-- [ ] Regular Diagram - Not Started
-- [ ] Circuit Diagram - Not Started
+- [x] Regular Diagram - 12/13
+- [x] Circuit Diagram - 12/13
 
 #### Hardware
 - [x] Build the Car 11/29
@@ -31,29 +31,29 @@ Our goal is to create a small robot car using a Raspberry Pi as a central proces
   - [ ] Stabilize - Not started
     - [ ] Pi - Not started
     - [ ] Battery - Not started
-    - [ ] Breadboard - Not started
-    - [ ] Sensors - Currently, it is using tapes 11/29
+    - [ ] Breadboard - 12/28
+    - [x] Sensors - Currently, it is using tapes 11/29
       
 #### Software
-- [ ] Main File - Possible change needed
+- [x] Main File - Possible change needed
   - [x] Working Main File - Tested on 11/29
   - [x] Can interact with Drivers - 11/29
     - [x] Sensors - Mounted on 11/29
     - [x] Motors - Mounted on 11/29
-- [ ] Drivers - In progress
-  - [ ] Sensors - Buggy state
-    - [ ] Line Sensors - In progress
-      - [ ] (Bug) It isn't interacting with the motors yet.
-      - [ ] Data are accessible (Worth checking) - Not started
-    - [ ] Echo Sensors - In progress
-      - [ ] Data are accessible (worth checking) - Not started
-  - [ ] Motors - Buggy state
-      - [ ] (BUG) One of the wheels is spinning in the opposite direction at the initial state.
-        - [ ] MotorDriver might be implemented incorrectly (Worth checking) - Not started
-      - [ ] Turning left/right correctly - Not started
-  - [ ] Integration Test - Not ready to start
-    - [ ] Line sensors can directly affect motors - Need Sensors to work properly first
-    - [ ] Echo Sensors can directly affect motors - Need Sensors to work properly first
+- [x] Drivers - In progress
+  - [x] Sensors - 12/5
+    - [x] Line Sensors - 12/5
+      - [x] (Bug) It isn't interacting with the motors yet.
+      - [x] Data are accessible (Worth checking) - 12/5
+    - [x] Echo Sensors - 12/5
+      - [x] Data are accessible (worth checking) - 12/5
+  - [x] Motors - 12/5
+      - [x] (BUG) One of the wheels is spinning in the opposite direction at the initial state.
+        - [x] MotorDriver might be implemented incorrectly (Worth checking) - Not started
+      - [x] Turning left/right correctly - 12/12
+  - [x] Integration Test - Not ready to start
+    - [x] Line sensors can directly affect motors - 11/28
+    - [x] Echo Sensors can directly affect motors - 11/28
 
 ## Progress Track
 11/09 - **Raf** -> Added starter code for the main program, a skeleton code for pulling data from sensors, and a documentation file (notes.txt).  
@@ -64,3 +64,7 @@ Our goal is to create a small robot car using a Raspberry Pi as a central proces
 11/28 - **David** -> Changed project structure.  Source files don't need to be in the main directory.  
 11/29 - **David** -> Moved documentation files to doc directory. Added a README file in doc for documentation.  
 11/29 - **Christian, David, Raf** -> We tried to build our prototype today. Currently, our wheels are parts where one side of the wheels works correctly while the other one moves the opposite. Lastly, we added sensors to our car but there is a bug that causes to not interact with the wheels
+12/05 - David -> Reworked sensor in develop branch. It is has proper thread handling including stopping the program. Currently missing the implementation of thread functions. Main compiles but haven't tested yet going to do that soon
+12/12 - Raf, Christian, Marc -> created the logic for moving the car.
+12/13 - Raf, Christian, Marc -> Final changes and presentation.
+12/13 - Raf, Christian, Marc, David -> Documentation.
