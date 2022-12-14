@@ -65,7 +65,7 @@ void *thread_collect_line_sensor_data(void *threadArgs) {
 
     printf("CHANGED %d %d\n", pin, sensor->data);
 
-    usleep(20);
+    usleep(30);
   }
   pthread_exit(NULL);
 }
