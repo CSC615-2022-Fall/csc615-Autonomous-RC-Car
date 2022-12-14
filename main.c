@@ -138,7 +138,6 @@ int main(int argc, char *argv[]) {
 
   while (running == RUN_ON) {
     // decision handling here
-    usleep(500);
 
     if (*front_echo_sensor < 12) {
       printf("I SEE OBJECT FRONT, TURN UNTIL BACK SEES OBJECT\n");
