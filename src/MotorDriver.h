@@ -1,3 +1,16 @@
+/**************************************************************
+ * Class:  CSC-615-01 Fall 2022
+ * Names: Christian Francisco, David Ye Luo, Marc Castro, Rafael Sunico
+ * Student IDs: 920603057, 917051959, 921720147, 920261261
+ * GitHub Name: csc615-term-project-DavidYeLuo
+ * Group Name: Fried Pi
+ * Project: Robot Car
+ *
+ * File: MotorDriver.h
+ *
+ * Description: A program that handles multiple motors in as an array list.
+ *
+ **************************************************************/
 #ifndef MOTORDRIVER_H
 #define MOTORDRIVER_H
 #include "External_Libraries/DEV_Config.h"

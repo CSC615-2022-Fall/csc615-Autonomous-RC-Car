@@ -1,3 +1,19 @@
+/**************************************************************
+ * Class:  CSC-615-01 Fall 2022
+ * Names: Christian Francisco, David Ye Luo, Marc Castro, Rafael Sunico
+ * Student IDs: 920603057, 917051959, 921720147, 920261261
+ * GitHub Name: csc615-term-project-DavidYeLuo
+ * Group Name: Fried Pi
+ * Project: Robot Car
+ *
+ * File: SensorDriver.c
+ *
+ * Description: A program that manages multiple sensors as an array.
+ * These sensors are placed in different threads to gather data.
+ * Meaning that each sensor collect data on their own threads.
+ *
+ **************************************************************/
+
 #include "SensorDriver.h"
 
 SensorDriver *_sensor_driver;
@@ -60,8 +76,9 @@ void terminate_sensor_driver() {
 }
 
 /*
- * Starts thread for each specific sensors.
- * TODO: Call thread functions here
+ * Starts the program
+ * It puts every sensor on a separate
+ * thread to collect data.
  */
 void start_sensors() {
   _sensor_driver->isRunning = RUN_ON;
@@ -143,6 +160,7 @@ Sensor *new_echo_sensor(int gpio_echo, int gpio_trig) {
 }
 
 /*
+ * --- Helper ---
  *  Adds sensor to the driver
  *  so that it can be initialized in a thread
  */
@@ -151,6 +169,7 @@ void _add_sensor_to_driver(Sensor *sensor, int index) {
 }
 
 /*
+ * --- Helper ---
  *  Allocates thread space to the driver
  *  so that it can be initialized in a thread
  */
@@ -159,6 +178,7 @@ void _add_thread_to_driver(int index) {
 }
 
 /*
+ * --- Helper ---
  * Sets up arg structure to pass to each thread.
  * Data contains information like when a thread should stop
  * and which GPIO pins it should use.

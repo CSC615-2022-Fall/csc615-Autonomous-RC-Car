@@ -1,3 +1,18 @@
+/**************************************************************
+ * Class:  CSC-615-01 Fall 2022
+ * Names: Christian Francisco, David Ye Luo, Marc Castro, Rafael Sunico
+ * Student IDs: 920603057, 917051959, 921720147, 920261261
+ * GitHub Name: csc615-term-project-DavidYeLuo
+ * Group Name: Fried Pi
+ * Project: Robot Car
+ *
+ * File: SensorDriver.h
+ *
+ * Description: A program that manages multiple sensors as an array.
+ * It also treats uses the Sensor struct as a common interface for
+ * echo sensors or line sensors.
+ *
+ **************************************************************/
 #ifndef SENSORDRIVER_H
 #define SENSORDRIVER_H
 
