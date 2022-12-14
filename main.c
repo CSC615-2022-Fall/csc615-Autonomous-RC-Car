@@ -118,11 +118,11 @@ int main(int argc, char *argv[]) {
   // Back Echo Sensor
   Sensor *currentSensor4;
   if (use_left == 1) {
-    currentSensor4 = new_echo_sensor(GPIO_LEFT_ECHO_SENSOR_ECHO, GPIO_LEFT_ECHO_SENSOR_TRIG);
+    //currentSensor4 = new_echo_sensor(GPIO_LEFT_ECHO_SENSOR_ECHO, GPIO_LEFT_ECHO_SENSOR_TRIG);
   } else {
-    currentSensor4 = new_echo_sensor(GPIO_RIGHT_ECHO_SENSOR_ECHO, GPIO_RIGHT_ECHO_SENSOR_TRIG);
+    //currentSensor4 = new_echo_sensor(GPIO_RIGHT_ECHO_SENSOR_ECHO, GPIO_RIGHT_ECHO_SENSOR_TRIG);
   }
-  back_echo_sensor = &(currentSensor4->data);
+  //back_echo_sensor = &(currentSensor4->data);
 
   // Start sensors
   start_sensors();
@@ -141,6 +141,9 @@ int main(int argc, char *argv[]) {
 
     if (*front_echo_sensor < 12) {
       printf("I SEE OBJECT FRONT, TURN UNTIL BACK SEES OBJECT\n");
+
+      running = 0;
+      break;
 
       // full stop
       set_all_motors_to_stop();
