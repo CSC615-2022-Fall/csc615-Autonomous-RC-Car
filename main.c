@@ -30,14 +30,12 @@
 #define GPIO_START_BUTTON 26
 #define GPIO_LEFT_LINE_SENSOR 20       // Reflective sensor left
 #define GPIO_RIGHT_LINE_SENSOR 21      // Reflective sensor right
-//#define GPIO_FRONT_ECHO_SENSOR_TRIG 19 // Front Echo Sensor Trigger
-//#define GPIO_FRONT_ECHO_SENSOR_ECHO 13 // Front Echo Sensor Echo
+#define GPIO_FRONT_ECHO_SENSOR_TRIG 19 // Front Echo Sensor Trigger
+#define GPIO_FRONT_ECHO_SENSOR_ECHO 13 // Front Echo Sensor Echo
 #define GPIO_LEFT_ECHO_SENSOR_TRIG 17  // Left Echo Sensor Trigger
 #define GPIO_LEFT_ECHO_SENSOR_ECHO 27  // Left Echo Sensor Echo
 #define GPIO_RIGHT_ECHO_SENSOR_TRIG 23 // Right Echo Sensor Trigger
 #define GPIO_RIGHT_ECHO_SENSOR_ECHO 24 // Right Echo Sensor Echo
-
-#define GPIO_FRONT_IR_SENSOR 19 // Front IR sensor
 
 // SensorDriver Config
 #define MAX_NUM_OF_SENSORS 10
@@ -72,8 +70,7 @@ int main(int argc, char *argv[]) {
   // Data to use
   int *left_line_sensor;
   int *right_line_sensor;
-  int *front_ir_sensor;
-  //int *front_echo_sensor;
+  int *front_echo_sensor;
   int *back_echo_sensor;
 
   // GPIO Init
@@ -95,9 +92,8 @@ int main(int argc, char *argv[]) {
 
   gpioSetMode(GPIO_LEFT_LINE_SENSOR, PI_INPUT);
   gpioSetMode(GPIO_RIGHT_LINE_SENSOR, PI_INPUT);
-  gpioSetMode(GPIO_FRONT_IR_SENSOR, PI_INPUT);
-  //gpioSetMode(GPIO_FRONT_ECHO_SENSOR_TRIG, PI_OUTPUT);
-  //gpioSetMode(GPIO_FRONT_ECHO_SENSOR_ECHO, PI_INPUT);
+  gpioSetMode(GPIO_FRONT_ECHO_SENSOR_TRIG, PI_OUTPUT);
+  gpioSetMode(GPIO_FRONT_ECHO_SENSOR_ECHO, PI_INPUT);
   if (use_left == 1) {
     gpioSetMode(GPIO_LEFT_ECHO_SENSOR_TRIG, PI_OUTPUT);
     gpioSetMode(GPIO_LEFT_ECHO_SENSOR_ECHO, PI_INPUT);
@@ -117,10 +113,8 @@ int main(int argc, char *argv[]) {
   Sensor *currentSensor2 = new_line_sensor(GPIO_RIGHT_LINE_SENSOR);
   right_line_sensor = &(currentSensor2->data);
   // Front Echo Sensor
-  //Sensor *currentSensor3 = new_echo_sensor(GPIO_FRONT_ECHO_SENSOR_ECHO, GPIO_FRONT_ECHO_SENSOR_TRIG);
-  //front_echo_sensor = &(currentSensor3->data);
-  Sensor *currentSensor3 = new_line_sensor(GPIO_FRONT_IR_SENSOR);
-  front_ir_sensor = &(currentSensor3->data);
+  Sensor *currentSensor3 = new_echo_sensor(GPIO_FRONT_ECHO_SENSOR_ECHO, GPIO_FRONT_ECHO_SENSOR_TRIG);
+  front_echo_sensor = &(currentSensor3->data);
   // Back Echo Sensor
   Sensor *currentSensor4;
   if (use_left == 1) {
@@ -146,7 +140,7 @@ int main(int argc, char *argv[]) {
     // decision handling here
     usleep(500);
 
-    if (*front_ir_sensor == OFF_LINE) {
+    if (*front_echo_sensor < 12) {
       printf("I SEE OBJECT FRONT, TURN UNTIL BACK SEES OBJECT\n");
 
       // full stop
