@@ -24,6 +24,10 @@ void *thread_collect_echo_sensor_data(void *threadArgs) {
       pthread_exit(NULL);
     }
 
+    if (*echoPin == 13) {
+      printf("yo");
+    }
+
     // keep setting start timer until ECHO doesn't read 0
     //for (int i = 0; i < 500000; i++) {
     int i = 0;
@@ -32,11 +36,19 @@ void *thread_collect_echo_sensor_data(void *threadArgs) {
       i++;
     }
 
+    if (*echoPin == 13) {
+      printf("1");
+    }
+
     // keep setting end timer until ECHO doesn't read 1
     i = 0;
     while (*isRunning == RUN_ON && gpioRead(*echoPin) == 1 && i < 500000) {
       clock_gettime(CLOCK_REALTIME, &endTime);
       i++;
+    }
+
+    if (*echoPin == 13) {
+      printf("2");
     }
 
     // calulcate elapsed time
