@@ -1,3 +1,17 @@
+/**************************************************************
+ * Class:  CSC-615-01 Fall 2022
+ * Names: Christian Francisco, David Ye Luo, Marc Castro, Rafael Sunico
+ * Student IDs: 920603057, 917051959, 921720147, 920261261
+ * GitHub Name: csc615-term-project-DavidYeLuo
+ * Group Name: Fried Pi
+ * Project: Robot Car
+ *
+ * File: ThreadSensor.c
+ *
+ * Description: Thread function implmentation to gather data from sensors.
+ * These functions will keep gathering data and placing them in Sensor->data
+ *
+ **************************************************************/
 #include "ThreadSensor.h"
 
 /**
@@ -6,6 +20,8 @@
  * @param threadArgs Contains information such as when to stop, and sensor
  * information.
  * @return void*
+ *
+ * NOTE: data are passed to Sensor->data
  */
 void *thread_collect_echo_sensor_data(void *threadArgs) {
   ThreadArgs *args = (ThreadArgs *)threadArgs;
@@ -53,6 +69,8 @@ void *thread_collect_echo_sensor_data(void *threadArgs) {
 
 /**
  * Credit to Rafael writing the implementation
+ *
+ * NOTE: data are passed to Sensor->data
  */
 void *thread_collect_line_sensor_data(void *threadArgs) {
   ThreadArgs *args = (ThreadArgs *)threadArgs;
