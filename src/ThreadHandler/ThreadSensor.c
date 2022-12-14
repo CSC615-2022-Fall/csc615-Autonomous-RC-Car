@@ -63,6 +63,8 @@ void *thread_collect_line_sensor_data(void *threadArgs) {
   while (*isRunning == RUN_ON) {
     sensor->data = gpioRead(pin);
 
+    printf("CHANGED %d %d\n", pin, sensor->data);
+
     usleep(20);
   }
   pthread_exit(NULL);
