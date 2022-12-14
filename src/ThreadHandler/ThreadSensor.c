@@ -88,9 +88,9 @@ void *thread_collect_line_sensor_data(void *threadArgs) {
   while (*isRunning == RUN_ON) {
     sensor->data = gpioRead(pin);
 
-    if (pin == 19) {
-      printf("%d\n", sensor->data);
-    }
+    //if (pin == 19) {
+    //  printf("%d\n", sensor->data);
+    //}
 
     usleep(100);
   }
