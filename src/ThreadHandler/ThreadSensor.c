@@ -32,6 +32,7 @@ void *thread_collect_echo_sensor_data(void *threadArgs) {
     //for (int i = 0; i < 500000; i++) {
     int i = 0;
     while (*isRunning == RUN_ON && gpioRead(*echoPin) == 0 && i < 500000) {
+      printf("hi");
       clock_gettime(CLOCK_REALTIME, &startTime);
       i++;
     }
