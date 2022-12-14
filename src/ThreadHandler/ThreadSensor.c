@@ -30,10 +30,11 @@ void *thread_collect_echo_sensor_data(void *threadArgs) {
 
     // keep setting start timer until ECHO doesn't read 0
     //for (int i = 0; i < 500000; i++) {
-    //int i = 0;
-    while (*isRunning == RUN_ON && gpioRead(*echoPin) == 0) {// && i < 500000) {
+    int i = 0;
+    while (*isRunning == RUN_ON && gpioRead(*echoPin) == 0 && i < 500000) {
+      printf("hi");
       clock_gettime(CLOCK_REALTIME, &startTime);
-      //i++;
+      i++;
     }
 
     if (*echoPin == 13) {
@@ -41,10 +42,10 @@ void *thread_collect_echo_sensor_data(void *threadArgs) {
     }
 
     // keep setting end timer until ECHO doesn't read 1
-    //i = 0;
-    while (*isRunning == RUN_ON && gpioRead(*echoPin) == 1) {// && i < 500000) {
+    i = 0;
+    while (*isRunning == RUN_ON && gpioRead(*echoPin) == 1 && i < 500000) {
       clock_gettime(CLOCK_REALTIME, &endTime);
-      //i++;
+      i++;
     }
 
     if (*echoPin == 13) {
