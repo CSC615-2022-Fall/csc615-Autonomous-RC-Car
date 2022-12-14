@@ -49,7 +49,7 @@ void *thread_collect_echo_sensor_data(void *threadArgs) {
     double distance = (elapsedSec * 34300) / 2;
 
     if (*echoPin == 13) {
-      printf("%d %f\n",*echoPin,distance);
+      printf("%d %d\n",*echoPin,sensor->data);
     }
 
     // load distance into int* input
