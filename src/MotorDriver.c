@@ -27,14 +27,20 @@ MotorDriver *_motor_driver;
  */
 void init_motor_driver(char i2c_address, UWORD pwm_freq,
                        int max_num_of_motors) {
+  // Check if max_num_of_motors > 0
   if (max_num_of_motors < 1) {
     printf("Warning: max_num_of_motor is less than 1\n");
     return;
   }
+
+  // Allocate memory our private structure
   _motor_driver = malloc(sizeof(MotorDriver));
-  PCA9685_Init(
-      i2c_address); // TODO: Test this later because main is passing an int
+
+  // Initialize PCA9685
+  PCA9685_Init(i2c_address);
   PCA9685_SetPWMFreq(pwm_freq);
+
+  // Update motor driver struct to a known state
   _motor_driver->num_of_motors = 0;
   _motor_driver->motor_capacity = max_num_of_motors;
   _motor_driver->motors = malloc(sizeof(Motor) * max_num_of_motors);
@@ -45,7 +51,9 @@ void init_motor_driver(char i2c_address, UWORD pwm_freq,
  * Deallocates resources
  */
 void terminate_motor_driver() {
-  Motor *current_motor;
+  Motor *current_motor; // Iterator
+
+  // Free all motors in the list
   for (int i = 0; i < _motor_driver->num_of_motors; i++) {
     current_motor = _motor_driver->motors[i];
 
@@ -55,8 +63,9 @@ void terminate_motor_driver() {
     free(current_motor);
     _motor_driver->motors[i] = NULL;
   }
-  free(_motor_driver->motors);
-  free(_motor_driver);
+
+  free(_motor_driver->motors); // Free the list
+  free(_motor_driver);         // Free the driver
 }
 
 /**
@@ -74,21 +83,25 @@ void add_motor_to_driver(UWORD base_speed, UBYTE pwm_pin,
   }
   // Create the driver
   Motor *current_motor = malloc(sizeof(Motor));
+  // Populate the structure
   current_motor->pwm_pin = pwm_pin;
   current_motor->base_speed = base_speed;
   current_motor->positive_pole = positive_motor_pin;
   current_motor->negative_pole = negative_motor_pin;
 
-  // Add the driver
+  // Add the current_motor to the driver list
   _motor_driver->motors[index] = current_motor;
   _motor_driver->num_of_motors++; // Increment counter
 }
 
 /**
  * Set the motor for a specific motor direction to forward.
+ * @param index is the index when the motor is added
  */
 void set_motor_direction_forward(int index) {
-  Motor *current_motor = _motor_driver->motors[index];
+  Motor *current_motor =
+      _motor_driver->motors[index]; // Gets the motor at the index
+  // Sets poles to the direction of "forward"
   PCA9685_SetLevel(current_motor->positive_pole, 1);
   PCA9685_SetLevel(current_motor->negative_pole, 0);
 }
@@ -97,7 +110,9 @@ void set_motor_direction_forward(int index) {
  * Set the motor for a specific motor direction to backward.
  */
 void set_motor_direction_backward(int index) {
-  Motor *current_motor = _motor_driver->motors[index];
+  Motor *current_motor =
+      _motor_driver->motors[index]; // Gets the motor at the index
+  // Sets poles to the direction of "backward"
   PCA9685_SetLevel(current_motor->positive_pole, 0);
   PCA9685_SetLevel(current_motor->negative_pole, 1);
 }
@@ -114,6 +129,7 @@ void set_motor_speed(int index, UWORD speed) {
  */
 void set_all_motors_speed(UWORD speed) {
   Motor *current_motor;
+  // Iterate through all motors and set their speed
   for (int i = 0; i < _motor_driver->num_of_motors; i++) {
     current_motor = _motor_driver->motors[i];
     PCA9685_SetPwmDutyCycle(current_motor->pwm_pin, speed);
@@ -125,6 +141,7 @@ void set_all_motors_speed(UWORD speed) {
  */
 void set_all_motors_to_stop() {
   Motor *current_motor;
+  // Iterate through all motors and set their speed
   for (int i = 0; i < _motor_driver->num_of_motors; i++) {
     current_motor = _motor_driver->motors[i];
     PCA9685_SetPwmDutyCycle(current_motor->pwm_pin, 0);

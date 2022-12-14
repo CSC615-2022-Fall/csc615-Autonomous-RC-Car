@@ -24,7 +24,13 @@
 #define BIN2 PCA_CHANNEL_4
 
 typedef struct Motor {
-  UWORD base_speed;
+  UWORD base_speed; // NOTE: Currently, it doesn't have any use/effect.
+                    //
+                    // Previous plan:
+                    // It was planned that users shouldn't change
+                    // the speed directly. Rather, they should set the speed
+                    // as a percentage. This way, one motor can be calibrated
+                    // to have similar speed.
 
   // Hardware wiring
   UBYTE pwm_pin;
