@@ -42,6 +42,7 @@
 // SensorDriver Config
 #define MAX_NUM_OF_SENSORS 10
 
+//Motor Config
 #define LEFT_MOTOR 0
 #define RIGHT_MOTOR 1
 
