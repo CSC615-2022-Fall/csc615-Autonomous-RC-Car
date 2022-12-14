@@ -28,7 +28,7 @@
 
 // GPIO Pin Numbers
 #define GPIO_START_BUTTON 26
-#define GPIO_LEFT_LINE_SENSOR 20       // Reflective sensor left
+#define GPIO_LEFT_LINE_SENSOR 23       // Reflective sensor left
 #define GPIO_RIGHT_LINE_SENSOR 21      // Reflective sensor right
 #define GPIO_FRONT_ECHO_SENSOR_TRIG 19 // Front Echo Sensor Trigger
 #define GPIO_FRONT_ECHO_SENSOR_ECHO 13 // Front Echo Sensor Echo
@@ -158,7 +158,7 @@ int main(int argc, char *argv[]) {
         set_motor_direction_forward(RIGHT_MOTOR);
         set_motor_direction_backward(LEFT_MOTOR);
       }
-      while (*back_echo_sensor >= 20)
+      while (*back_echo_sensor >= 23)
         usleep(100);
       printf("BACK SEES OBJECT, STOP TURNING, MOVE FORWARDS UNTIL BACK DOESNT SEE OBJECT\n");
 
@@ -170,7 +170,7 @@ int main(int argc, char *argv[]) {
       set_motor_speed(LEFT_MOTOR, turn_speed);
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_direction_forward(LEFT_MOTOR);
-      while (*back_echo_sensor < 20)
+      while (*back_echo_sensor < 23)
         usleep(100);
       printf("BACK DOESNT SEE OBJECT, STOP MOVING, TURN 90, MOVE FORWARDS UNTIL BACK SEES OBJECT\n");
 
@@ -199,7 +199,7 @@ int main(int argc, char *argv[]) {
       set_motor_speed(LEFT_MOTOR, turn_speed);
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_direction_forward(LEFT_MOTOR);
-      while (*back_echo_sensor >= 20)
+      while (*back_echo_sensor >= 23)
         usleep(100);
       printf("BACK SEES OBJECT, STOP MOVING, MOVE FORWARDS SLIGHTLY, MOVE FORWARDS UNTIL BACK SEES OBJECT\n");
 
@@ -221,7 +221,7 @@ int main(int argc, char *argv[]) {
       set_motor_speed(LEFT_MOTOR, turn_speed);
       set_motor_direction_forward(RIGHT_MOTOR);
       set_motor_direction_forward(LEFT_MOTOR);
-      while (*back_echo_sensor < 20)
+      while (*back_echo_sensor < 23)
         usleep(100);
       printf("BACK SEES OBJECT, STOP MOVING, 90 TURN, MOVE FORWARDS UNTIL FRONT SEES BLACK\n");
 
