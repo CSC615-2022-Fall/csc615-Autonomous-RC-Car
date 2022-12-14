@@ -144,7 +144,7 @@ int main(int argc, char *argv[]) {
 
       // full stop
       set_all_motors_to_stop();
-      time_sleep(0.5);
+      time_sleep(0.2);
 
       // turn until back echo sees object
       set_motor_speed(RIGHT_MOTOR, turn_speed);
@@ -163,7 +163,7 @@ int main(int argc, char *argv[]) {
       printf("BACK SEES OBJECT, STOP TURNING, MOVE FORWARDS UNTIL BACK DOESNT SEE OBJECT\n");
 
       set_all_motors_to_stop();
-      time_sleep(0.5);
+      time_sleep(0.2);
 
       // repeat move forwards until back echo does not see object
       set_motor_speed(RIGHT_MOTOR, turn_speed);
@@ -175,7 +175,7 @@ int main(int argc, char *argv[]) {
       printf("BACK DOESNT SEE OBJECT, STOP MOVING, TURN 90, MOVE FORWARDS UNTIL BACK SEES OBJECT\n");
 
       set_all_motors_to_stop();
-      time_sleep(0.5);
+      time_sleep(0.2);
 
       // 90 degree turn
       set_motor_speed(RIGHT_MOTOR, turn_speed);
@@ -192,7 +192,7 @@ int main(int argc, char *argv[]) {
       time_sleep(turn_duration);
 
       set_all_motors_to_stop();
-      time_sleep(0.5);
+      time_sleep(0.2);
 
       // repeat move forwards until back echo sensor sees object
       set_motor_speed(RIGHT_MOTOR, turn_speed);
@@ -204,7 +204,7 @@ int main(int argc, char *argv[]) {
       printf("BACK SEES OBJECT, STOP MOVING, MOVE FORWARDS SLIGHTLY, MOVE FORWARDS UNTIL BACK SEES OBJECT\n");
 
       set_all_motors_to_stop();
-      time_sleep(0.5);
+      time_sleep(0.2);
 
       // move forwards slightly
       set_motor_speed(RIGHT_MOTOR, turn_speed);
@@ -214,7 +214,7 @@ int main(int argc, char *argv[]) {
       time_sleep(0.05);
 
       set_all_motors_to_stop();
-      time_sleep(0.5);
+      time_sleep(0.2);
 
       // repeat move forwards until left echo sensor does not see object
       set_motor_speed(RIGHT_MOTOR, turn_speed);
@@ -226,7 +226,7 @@ int main(int argc, char *argv[]) {
       printf("BACK SEES OBJECT, STOP MOVING, 90 TURN, MOVE FORWARDS UNTIL FRONT SEES BLACK\n");
 
       set_all_motors_to_stop();
-      time_sleep(0.5);
+      time_sleep(0.2);
 
       // move forwards slightly
       set_motor_speed(RIGHT_MOTOR, turn_speed);
@@ -236,7 +236,7 @@ int main(int argc, char *argv[]) {
       time_sleep(0.1);
 
       set_all_motors_to_stop();
-      time_sleep(0.5);
+      time_sleep(0.2);
 
       // 90 degree turn
       set_motor_speed(RIGHT_MOTOR, turn_speed);
@@ -253,7 +253,7 @@ int main(int argc, char *argv[]) {
       time_sleep(turn_duration);
 
       set_all_motors_to_stop();
-      time_sleep(0.5);
+      time_sleep(0.2);
 
       // repeat move forwards until RIGHT/LEFT reflective sensor see black
       set_motor_speed(RIGHT_MOTOR, turn_speed);
@@ -270,7 +270,7 @@ int main(int argc, char *argv[]) {
       printf("LINE SEES BLACK FRONT, MOVE SIDE UNTIL OTHER LINE SEES BLACK\n");
 
       set_all_motors_to_stop();
-      time_sleep(0.5);
+      time_sleep(0.2);
 
       // stop RIGHT/LEFT, repeat move LEFT/RIGHT forwards until LEFT/RIGHT sensor sees black
       if (use_left) {
@@ -292,7 +292,7 @@ int main(int argc, char *argv[]) {
       printf("OTHER LINE SEES BLACK FRONT, MOVE SIDE UNTIL LINE SEES WHITE\n");
 
       set_all_motors_to_stop();
-      time_sleep(0.5);
+      time_sleep(0.2);
 
       // stop RIGHT/LEFT repeat move forwards until RIGHT/LEFT sensor sees white
       if (use_left) {
