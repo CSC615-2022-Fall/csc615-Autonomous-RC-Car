@@ -144,7 +144,7 @@ int main(int argc, char *argv[]) {
       printf("I SEE OBJECT FRONT, TURN UNTIL BACK SEES OBJECT\n");
 
       running = 0;
-      break;;
+      return;
 
       // full stop
       set_all_motors_to_stop();
